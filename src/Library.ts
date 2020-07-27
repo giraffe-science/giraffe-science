@@ -3,6 +3,7 @@ import {bufferText} from "@http4t/core/bodies";
 import {get} from "@http4t/core/requests";
 import {load as cheerio} from "cheerio";
 import Papa, {ParseError, ParseResult} from "papaparse";
+import {CachedLookup, CrossRefLookup, Lookup} from "./Lookup";
 import {Complete} from "./util/Complete";
 
 type Sheet = {
@@ -27,7 +28,7 @@ export type Resource = {
     readonly citation?: string;
     readonly summary?: string;
     readonly title?: string;
-    readonly year?: string;
+    readonly created?: string;
     readonly references: Reference[];
 }
 export type Tags = { [k: string]: Resource[] };
@@ -72,16 +73,16 @@ function headerLookup(values: string[]): HeaderLookup {
     }, {} as HeaderLookup);
 }
 
-function references(citation: string): Reference[] {
+export function parseReferences(citation: string): Reference[] {
     const regexes: [ReferenceType, RegExp[]][] = [
             ["doi",
                 [
                     // https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-                    /doi: (10.\d{4,9}\/[-._;()/:A-Z0-9]+?)\.?/ig,
-                    /doi: (10.1002\/[^\s]+?)\.?/ig,
-                    /doi: (10.\d{4}\/\d+-\d+X?(\d+)\d+<[\d\w]+:[\d\w]*>\d+.\d+.\w+;\d)\.?/ig,
-                    /doi: (10.1207\/[\w\d]+&\d+_\d+?)\.?/ig,
-                    /doi: (10.1021\/\w\w\d+?)\.?/ig,
+                    /doi: ?([^ ]+)/ig,
+                    /doi: ?(10.1002\/[^\s]+)/ig,
+                    /doi: ?(10.\d{4}\/\d+-\d+X?(\d+)\d+<[\d\w]+:[\d\w]*>\d+.\d+.\w+;\d)/ig,
+                    /doi: ?(10.1207\/[\w\d]+&\d+_\d+)/ig,
+                    /doi: ?(10.1021\/\w\w\d+)/ig,
                 ],
             ],
             ["issn", [/issn ([0-9]+-[0-9]+)/ig]],
@@ -92,31 +93,60 @@ function references(citation: string): Reference[] {
     return regexes.reduce((acc, [type, regexes]) => {
         for (const regex of regexes) {
             for (const match of citation.matchAll(regex)) {
-                acc.push({type: type, value: match[1]})
+                acc.push({type: type, value: match[1].replace(/\.$/, "")})
             }
         }
         return acc;
     }, [] as Reference[]);
 }
 
-function parseSheet({title, data}: RawSheet): Resource[] {
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+function formatDate(date: Date | undefined): string | undefined {
+    if (typeof date === "undefined") return;
+    return `${date?.getDay()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string, lookup: Lookup): Promise<Resource> {
+    const link = row[headers.link];
+    const downloadLink = row[headers.downloadLink];
+    const references = [
+        ...parseReferences(row[headers.citation]),
+        ...(link ? [{type: "url", value: link}] as Reference[] : []),
+        ...(downloadLink ? [{type: "url", value: downloadLink}] as Reference[] : [])];
+
+    const doi = references.find(r => r.type === "doi")?.value;
+
+    const manualTitle = row[headers.title]?.replace(/^[“"]/, "")?.replace(/[”"]\s*$/, "");
+    const resourceTitle = isBlank(manualTitle)
+        ? doi ? (await lookup.lookup(doi))?.title : undefined
+        : manualTitle;
+
+    const manualYear = row[headers.year];
+    const resourceYear = isBlank(manualYear)
+        ? doi ? formatDate((await lookup.lookup(doi))?.created) : undefined
+        : manualYear;
+
+    return removeUndefined<Resource>({
+        type: row[headers.type].toLowerCase(),
+        tags: new Set([sheetTitle]),
+        citation: row[headers.citation],
+        summary: row[headers.summary],
+        title: resourceTitle,
+        created: resourceYear,
+        references
+    });
+}
+
+function parseResources({title, data}: RawSheet, lookup: Lookup): Promise<Resource>[] {
     const headers: HeaderLookup = headerLookup(data[0]);
-    return data.slice(1).reduce((acc, row) => {
-        const link = row[headers.link];
-        const downloadLink = row[headers.downloadLink];
-        return [...acc, removeUndefined<Resource>({
-            type: row[headers.type].toLowerCase(),
-            tags: new Set([title]),
-            citation: row[headers.citation],
-            summary: row[headers.summary],
-            title: row[headers.title]?.replace(/^[“"]/,"")?.replace(/[”"]\s*$/,""),
-            year: row[headers.year],
-            references: [
-                ...references(row[headers.citation]),
-                ...(link ? [{type: "url", value: link} as Reference] : []),
-                ...(downloadLink ? [{type: "url", value: downloadLink} as Reference] : [])]
-        })]
-    }, [] as Resource[]);
+
+    return data.slice(1).reduce(
+        (acc, row) => {
+            return [...acc, parseRow(row, headers, title, lookup)]
+        },
+        [] as Promise<Resource>[])
 }
 
 type RawSheet = { id: string, title: string, url: string, data: string[][] };
@@ -129,7 +159,7 @@ function download(sheet: Sheet): Promise<RawSheet> {
             complete: function (results: ParseResult<string[]>) {
                 resolve({id: sheet.id, title: sheet.title, url, data: results.data})
             },
-            error: function (error: ParseError, file?: File) {
+            error: function (error: ParseError) {
                 reject(error);
             }
         });
@@ -138,34 +168,32 @@ function download(sheet: Sheet): Promise<RawSheet> {
 
 export async function load(): Promise<Library> {
     const http = new FetchHandler();
-    const webPage = http.handle(get(`${baseUrl}/pubhtml`))
+    const lookup = new CachedLookup(new CrossRefLookup(http));
+
+    const page = await http.handle(get(`${baseUrl}/pubhtml`))
         .then(response => bufferText(response.body))
         .then(text => cheerio(text));
 
-    const sheets: Promise<Sheet[]> = webPage.then(
-        page =>
-            page("#sheet-menu").children("li").map((i, li) => {
-                console.log(li);
-                console.log(li.firstChild.firstChild.data);
-                return ({
-                    id: li.attribs.id.replace("sheet-button-", ""),
-                    title: li.firstChild.firstChild.data
-                });
-            }).get());
+    const sheets: Sheet[] = page("#sheet-menu").children("li").map((i, li) => {
+        return ({
+            id: li.attribs.id.replace("sheet-button-", ""),
+            title: li.firstChild.firstChild.data
+        });
+    }).get();
 
-    const resources = await sheets
-        .then(all =>
-            Promise
-                .all(all.map(download))
-                .then(all => all.reduce((acc, sheet) =>
-                    [...acc, ...parseSheet(sheet)], [] as Resource[])));
+    const resourcePromises = await Promise.all(
+        sheets
+            .map(download)
+            .map(async csv => Promise.all(parseResources(await csv, lookup))));
+    const resources: Resource[] = resourcePromises.flatMap(r => r);
 
-    const tags = resources.reduce((acc, resource) =>
-        [...resource.tags].reduce((acc, tag) => {
-            acc[tag] = (acc[tag] || [])
-            acc[tag].push(resource);
-            return acc;
-        }, acc), {} as Tags)
+    const tags = resources
+        .reduce((acc, resource) =>
+            [...resource.tags].reduce((acc, tag) => {
+                acc[tag] = (acc[tag] || [])
+                acc[tag].push(resource);
+                return acc;
+            }, acc), {} as Tags)
 
     const library = {resources: resources, tags};
     console.log(library);

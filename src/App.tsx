@@ -1,10 +1,10 @@
 import {Card} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import Box from "@material-ui/core/Box";
 import CardContent from "@material-ui/core/CardContent";
 import Chip from "@material-ui/core/Chip";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, {useState} from 'react';
@@ -77,14 +77,18 @@ function App({loading}: { loading: Promise<Library> }) {
                   </CardContent>
                 </Card>}
                 {library
-                    ? <Box>
-                        <Box>{
-                            library.resources.filter(resource => tags.size === 0 ? true : hasTag(resource, tags)).map((resource, i) =>
-                                <ResourceCard resource={resource} i={i}/>
+                    ? <Grid container spacing={10}>
+                        {
+                            library.resources
+                                .filter(resource=>resource.references.length > 0)
+                                .filter(resource => tags.size === 0 ? true : hasTag(resource, tags)).map((resource, i) =>
+                                <Grid item key={i} xs={4} style={{display: 'flex'}}>
+                                    <ResourceCard resource={resource} i={i}/>
+                                </Grid>
                             )
                         }
-                        </Box>
-                    </Box>
+
+                    </Grid>
                     : <p>loading...</p>}
             </Container>
         </ThemeProvider>

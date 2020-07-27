@@ -1,3 +1,30 @@
+
+https://docs.google.com/spreadsheets/d/e/2PACX-1vRI6k4TXgDpkUQIY2GuGRG76ejHPTOMqp473sN5JpPydPDRlwLTmZtyAc3gXB0AVAbMxMMxvi5mcfMp/pub?gid=0&single=true&output=csv
+
+## DOI lookup
+
+https://api.crossref.org/works/10.3171/SPI-07/12/601
+
+[crossref.json](crossref.json)
+
+
+## Pubmed lookup
+ 
+https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?tool=my_tool&email=my_email@example.com&ids=10.1093/nar/gks1195
+
+```xml
+<pmcids status="ok">
+    <request idtype="doi" dois="" versions="yes" showaiid="no">
+        <echo>tool=my_tool;email=my_email%40example.com;ids=10.1093%2Fnar%2Fgks1195</echo>
+    </request>
+    <record requested-id="10.1093/NAR/GKS1195" pmcid="PMC3531190" pmid="23193287" doi="10.1093/nar/gks1195">
+        <versions>
+            <version pmcid="PMC3531190.1" current="true"/>
+        </versions>
+    </record>
+</pmcids>
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

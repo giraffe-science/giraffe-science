@@ -9,8 +9,9 @@ export type CustomClass =
     | "h1Scientific"
     | "resourceCard"
     | "resourceCardContent"
+    | "resourceCardActions"
     | "resourceTitle"
-    | "resourceType" ;
+    | "resourceType" |"resourceDate";
 export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles<DefaultTheme, CustomClass>((theme => (
     {
         appBar: {
@@ -28,19 +29,30 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
             letterSpacing: 3,
         },
         resourceCard: {
-            boxShadow: "none"
+            boxShadow: "none",
+            height:"100%",
         },
         resourceCardContent: {
-            textAlign: "left"
+            textAlign: "left",
+            padding: "0"
+        },
+        resourceCardActions: {
+            padding: "15px 0 0 0",
         },
         resourceType: {
             fontSize: 14,
             textAlign: "left",
             fontWeight: "bold"
         },
-        resourceTitle: {
-            fontSize: 20,
+        resourceDate: {
+            fontSize: 14,
             textAlign: "left",
+            fontWeight: "normal"
+        },
+        resourceTitle: {
+            fontSize: 18,
+            textAlign: "left",
+            paddingBottom: "10px"
         }
     }
 )));
