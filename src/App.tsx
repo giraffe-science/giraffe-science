@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, {useState} from 'react';
 import './App.css';
+import fur from "./images/fur.png"
 import {Library, Resource} from "./Library";
 import {ResourceCard} from "./ResourceCard";
 import {theme, useClasses} from "./styles";
@@ -48,8 +49,18 @@ function App({loading}: { loading: Promise<Library> }) {
             <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
             <Container className="App">
                 <AppBar className={classes.appBar} position="static">
-                    <Typography variant="h1" className={classes.h1Scientific}>SCIENTIFIC</Typography>
-                    <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
+                    <Grid container justify="center">
+                        <Grid item>
+                            <img src={fur} style={{height: "80px", marginRight:"10px"}}/>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h1" className={classes.h1Scientific} style={{marginBottom:"5px"}}>SCIENTIFIC</Typography>
+                            <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
+                        </Grid>
+                        <Grid item>
+                            <img src={fur} style={{height: "80px", marginLeft:"10px"}}/>
+                        </Grid>
+                    </Grid>
                 </AppBar>
             </Container>
             <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
@@ -80,7 +91,7 @@ function App({loading}: { loading: Promise<Library> }) {
                     ? <Grid container spacing={10}>
                         {
                             library.resources
-                                .filter(resource=>resource.references.length > 0)
+                                .filter(resource => resource.references.length > 0)
                                 .filter(resource => tags.size === 0 ? true : hasTag(resource, tags)).map((resource, i) =>
                                 <Grid item key={i} xs={4} style={{display: 'flex'}}>
                                     <ResourceCard resource={resource} i={i}/>

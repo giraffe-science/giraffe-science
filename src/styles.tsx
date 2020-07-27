@@ -21,8 +21,7 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
         },
         h1Scientific: {
             fontSize: 40,
-            letterSpacing: 3,
-            lineHeight: 1.05,
+            letterSpacing: 3
         },
         h1Giraffe: {
             fontSize: 55,
