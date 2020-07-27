@@ -93,7 +93,7 @@ function App({loading}: { loading: Promise<Library> }) {
                             library.resources
                                 .filter(resource => resource.references.length > 0)
                                 .filter(resource => tags.size === 0 ? true : hasTag(resource, tags)).map((resource, i) =>
-                                <Grid item key={i} xs={4} style={{display: 'flex'}}>
+                                <Grid item key={i} xs={12} sm={6} md={4} style={{display: 'flex'}}>
                                     <ResourceCard resource={resource} i={i}/>
                                 </Grid>
                             )
