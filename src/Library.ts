@@ -16,12 +16,11 @@ type Row = {
     readonly title?: string;
     readonly year?: string;
     readonly summary?: string;
-    readonly link?: string;
-    readonly downloadLink?: string;
+    readonly links: string[];
 }
 
 export type ReferenceType = "doi" | "issn" | "pmid" | "pmc" | "url";
-export type Reference = { type: ReferenceType, value: string };
+export type Reference = { type: ReferenceType, value: string, description?: string };
 export type Resource = {
     readonly type: string;
     readonly tags: Set<string>;
@@ -45,12 +44,15 @@ function guessHeader(value: string): keyof Row | undefined {
     if (value.toLowerCase().includes("summary")) return "summary";
     if (value.toLowerCase().includes("title")) return "title";
     if (value.toLowerCase().includes("year")) return "year";
-    if (value.toLowerCase().replace(" ", "") === "link") return "link";
-    if (value.toLowerCase().includes("download")) return "downloadLink";
+    if (value.toLowerCase().includes("link")) return "links";
     return undefined;
 }
 
-type HeaderLookup = { -readonly [K in keyof Complete<Row>]: number };
+type FieldLookup = { -readonly [K in keyof Complete<Row>]: number };
+type HeaderLookup = {
+    fields: FieldLookup,
+    links: [{ description?: string, index: number }]
+};
 
 function isBlank(v: any): boolean {
     return typeof v === "undefined" || (typeof v === "string" && v.replace(" ", "") === "");
@@ -68,9 +70,17 @@ function removeUndefined<T>(value: T): T {
 function headerLookup(values: string[]): HeaderLookup {
     return values.reduce((acc, value, i) => {
         const header = guessHeader(value);
-        if (header) acc[header] = i;
+        if (header) {
+            if (header === "links") {
+                const description = value.toLowerCase().replace(/\s*link\s*/, "");
+                acc.links.push({description: isBlank(description) ? undefined : description, index: i})
+            } else {
+                acc.fields[header] = i;
+            }
+        }
+
         return acc;
-    }, {} as HeaderLookup);
+    }, {fields: {}, links: []} as any as HeaderLookup);
 }
 
 export function parseReferences(citation: string): Reference[] {
@@ -109,30 +119,32 @@ function formatDate(date: Date | undefined): string | undefined {
 }
 
 async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string, lookup: Lookup): Promise<Resource> {
-    const link = row[headers.link];
-    const downloadLink = row[headers.downloadLink];
+    const fields = headers.fields;
+
     const references = [
-        ...parseReferences(row[headers.citation]),
-        ...(link ? [{type: "url", value: link}] as Reference[] : []),
-        ...(downloadLink ? [{type: "url", value: downloadLink}] as Reference[] : [])];
+        ...parseReferences(row[fields.citation]),
+        ...headers.links
+            .map(({description, index}) =>
+                ({type: "url", value: row[index], description} as Reference))
+            .filter(ref => !isBlank(ref.value))];
 
     const doi = references.find(r => r.type === "doi")?.value;
 
-    const manualTitle = row[headers.title]?.replace(/^[“"]/, "")?.replace(/[”"]\s*$/, "");
+    const manualTitle = row[fields.title]?.replace(/^[“"]/, "")?.replace(/[”"]\s*$/, "");
     const resourceTitle = isBlank(manualTitle)
         ? doi ? (await lookup.lookup(doi))?.title : undefined
         : manualTitle;
 
-    const manualYear = row[headers.year];
+    const manualYear = row[fields.year];
     const resourceYear = isBlank(manualYear)
         ? doi ? formatDate((await lookup.lookup(doi))?.created) : undefined
         : manualYear;
 
     return removeUndefined<Resource>({
-        type: row[headers.type].toLowerCase(),
+        type: row[fields.type].toLowerCase(),
         tags: new Set([sheetTitle]),
-        citation: row[headers.citation],
-        summary: row[headers.summary],
+        citation: row[fields.citation],
+        summary: row[fields.summary],
         title: resourceTitle,
         created: resourceYear,
         references
@@ -141,7 +153,6 @@ async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string
 
 function parseResources({title, data}: RawSheet, lookup: Lookup): Promise<Resource>[] {
     const headers: HeaderLookup = headerLookup(data[0]);
-
     return data.slice(1).reduce(
         (acc, row) => {
             return [...acc, parseRow(row, headers, title, lookup)]
