@@ -48,9 +48,9 @@ function App({loading}: { loading: Promise<Library> }) {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
-            <Container className="App">
-                <AppBar className={classes.appBar} position="static">
+            <Container >
+                <AppBar className={classes.appBar} position="fixed">
+                    <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
                     <Grid container justify="center">
                         <Grid item>
                             <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
@@ -63,25 +63,25 @@ function App({loading}: { loading: Promise<Library> }) {
                             <img alt="" src={fur} style={{height: furHeight, marginLeft:furMargin}}/>
                         </Grid>
                     </Grid>
+                    <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
+                    <Container className="App">
+                        {library
+                            ? <Container>
+                                {Object.keys(library.tags).map(tag =>
+                                    <Chip label={tag.toUpperCase()}
+                                          key={tag}
+                                          clickable
+                                          color={tags.has(tag) ? "primary" : "default"}
+                                          onClick={() => toggleTag(tag)}
+                                    />)}
+                            </Container>
+                            : <p>Loading...</p>
+                        }
+                    </Container>
+                    <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
                 </AppBar>
             </Container>
-            <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
 
-            <Container className="App">
-                {library
-                    ? <Container>
-                        {Object.keys(library.tags).map(tag =>
-                            <Chip label={tag.toUpperCase()}
-                                  key={tag}
-                                  clickable
-                                  color={tags.has(tag) ? "primary" : "default"}
-                                  onClick={() => toggleTag(tag)}
-                            />)}
-                    </Container>
-                    : <p>Loading...</p>
-                }
-            </Container>
-            <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
             <Container className="App">
 
                 {error && <Card>
@@ -93,7 +93,6 @@ function App({loading}: { loading: Promise<Library> }) {
                     ? <Grid container spacing={10}>
                         {
                             library.resources
-                                .filter(resource => resource.references.length > 0)
                                 .filter(resource => tags.size === 0 ? true : hasTag(resource, tags)).map((resource, i) =>
                                 <Grid item key={i} xs={12} sm={6} md={4} style={{display: 'flex'}}>
                                     <ResourceCard resource={resource} i={i}/>
