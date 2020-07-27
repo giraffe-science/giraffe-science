@@ -66,6 +66,9 @@ const baseTheme = createMuiTheme({
     palette: {
         background: {
             default: "#fff"
+        },
+        primary:{
+            main:"#B06B32"
         }
     },
     overrides: {
