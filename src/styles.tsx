@@ -20,11 +20,11 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
             boxShadow: "none"
         },
         h1Scientific: {
-            fontSize: 40,
+            fontSize: 31.5,
             letterSpacing: 3
         },
         h1Giraffe: {
-            fontSize: 55,
+            fontSize: 44,
             letterSpacing: 3,
         },
         resourceCard: {

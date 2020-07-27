@@ -43,6 +43,8 @@ function App({loading}: { loading: Promise<Library> }) {
         setTags(newTags);
     }
 
+    const furHeight = "60px";
+    const furMargin = "8px";
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
@@ -51,14 +53,14 @@ function App({loading}: { loading: Promise<Library> }) {
                 <AppBar className={classes.appBar} position="static">
                     <Grid container justify="center">
                         <Grid item>
-                            <img alt="" src={fur} style={{height: "80px", marginRight:"10px"}}/>
+                            <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
                         </Grid>
                         <Grid item>
                             <Typography variant="h1" className={classes.h1Scientific} style={{marginBottom:"5px"}}>SCIENTIFIC</Typography>
                             <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
                         </Grid>
                         <Grid item>
-                            <img alt="" src={fur} style={{height: "80px", marginLeft:"10px"}}/>
+                            <img alt="" src={fur} style={{height: furHeight, marginLeft:furMargin}}/>
                         </Grid>
                     </Grid>
                 </AppBar>
