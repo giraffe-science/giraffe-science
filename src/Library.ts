@@ -152,9 +152,11 @@ function parseResources({title, data}: RawSheet, lookup: Lookup): Promise<Resour
 type RawSheet = { id: string, title: string, url: string, data: string[][] };
 
 function download(sheet: Sheet): Promise<RawSheet> {
-    return new Promise<RawSheet>((resolve, reject) => {
+    return new Promise<RawSheet>(async (resolve, reject) => {
         const url = `${baseUrl}/pub?gid=${sheet.id}&single=true&output=csv`;
-        Papa.parse(url, {
+        const text = await bufferText((await new FetchHandler().handle(get(url))).body);
+        const file = new File(text.split("\n"), "data.csv");
+        Papa.parse(file, {
             download: true,
             complete: function (results: ParseResult<string[]>) {
                 resolve({id: sheet.id, title: sheet.title, url, data: results.data})
