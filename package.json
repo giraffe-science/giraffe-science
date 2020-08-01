@@ -2,7 +2,7 @@
   "name": "research",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/scientific-giraffe",
+  "homepage": "",
   "dependencies": {
     "@http4t/browser": "^0.0.153",
     "@http4t/core": "^0.0.153",
