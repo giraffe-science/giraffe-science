@@ -11,14 +11,18 @@ export class RetryHandler implements HttpHandler {
         let response;
         for (let i = 0; i < this.retries; i++) {
             response = await this.decorated.handle(request);
-            if (response.status !== 500)
+            if (response.status !== 500){
+                if(i>0){
+                    console.log(`succeeded ${request.method} ${uriString(request)}`);
+                }
                 return {
                     ...response,
                     body: await bufferText(response.body)
                 };
+            }
             console.log(`retry ${request.method} ${uriString(request)}`);
         }
-        return response as any as HttpResponse;
+        throw new Error(`Failed: ${request.method} ${uriString(request)}`);
     }
 
 }

@@ -16,7 +16,6 @@ export class AxiosClient implements HttpHandler {
             transformResponse: res=>res,
             validateStatus: () => true
         });
-        console.log(response);
         return {
             status: response.status,
             headers: Object.entries(response.headers).map(([n, v]) => ([n, v as string])),

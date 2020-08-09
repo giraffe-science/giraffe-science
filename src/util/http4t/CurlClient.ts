@@ -63,7 +63,7 @@ export class CurlClient implements HttpHandler {
             if (request.body && request.body !== "")
                 throw new Error(`CurlClient does not yet support body ${request.method} ${uriString(request)}`);
             const command =
-                `curl -i -X ${request.method} ${request.headers.map(([n, v]) => `-H "${n.replace('"', '\"')}: ${v.replace('"', '\"')}"`).join("\n")} ${uriString(request)}`;
+                `curl -i -X ${request.method} ${request.headers.map(([n, v]) => `-H "${n.replace('"', '\"')}: ${v.replace('"', '\"')}"`).join("\n")} "${uriString(request)}"`;
             // console.log(command);
             exec(command, (error, stdout, stderr) => {
                 if (error) {
