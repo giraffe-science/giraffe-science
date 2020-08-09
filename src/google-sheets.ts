@@ -1,4 +1,5 @@
 import {bufferText} from "@http4t/core/bodies";
+import {HttpHandler} from "@http4t/core/contract";
 import {get} from "@http4t/core/requests";
 import {load as cheerio} from "cheerio";
 import {Library, Reference, Resource, Tags} from "./Library";
@@ -6,9 +7,6 @@ import {CachedLookup, CrossRefLookup, Lookup} from "./Lookup";
 import {parseReferences} from "./references";
 import {CheerioSheets, Csv} from "./Sheets";
 import {Complete} from "./util/Complete";
-import {AxiosClient} from "./util/http4t/AxiosClient";
-import {LoggingHandler} from "./util/http4t/LoggingHandler";
-import {RetryHandler} from "./util/http4t/RetryHandler";
 
 type Sheet = {
     readonly id: string;
@@ -100,7 +98,7 @@ async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string
 
     return removeUndefined<Resource>({
         type: row[fields.type].toLowerCase(),
-        tags: new Set([sheetTitle]),
+        tags: [sheetTitle.toLowerCase()],
         citation: row[fields.citation],
         summary: row[fields.summary],
         title: resourceTitle,
@@ -111,11 +109,21 @@ async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string
 
 function parseResources(sheet: Sheet, data: Csv, lookup: Lookup): Promise<Resource>[] {
     const headers: HeaderLookup = headerLookup(data[0]);
-    return data.slice(1).reduce(
-        (acc, row) => {
-            return [...acc, parseRow(row, headers, sheet.title, lookup)]
-        },
-        [] as Promise<Resource>[])
+    return data
+        .slice(1)
+        .filter(row => {
+            if (!isBlank(row[headers.fields.citation])) return true;
+            if (!isBlank(row[headers.fields.title])) return true;
+            for (const link of headers.links) {
+                if (!isBlank(row[link.index])) return true;
+            }
+            return false;
+        })
+        .reduce(
+            (acc, row) => {
+                return [...acc, parseRow(row, headers, sheet.title, lookup)]
+            },
+            [] as Promise<Resource>[])
 }
 
 
@@ -143,7 +151,7 @@ export async function resources(sheets: Sheet[],
 function library(resources: Resource[]): Library {
     const tags = resources
         .reduce((acc, resource) =>
-            [...resource.tags].reduce((acc, tag) => {
+            resource.tags.reduce((acc, tag) => {
                 acc[tag] = (acc[tag] || [])
                 acc[tag].push(resource);
                 return acc;
@@ -152,8 +160,7 @@ function library(resources: Resource[]): Library {
     return {resources: resources, tags};
 }
 
-export async function load(): Promise<Library> {
-    const http = new RetryHandler(new LoggingHandler(new AxiosClient(), true));
+export async function load(http: HttpHandler): Promise<Library> {
     const page: CheerioStatic = await http.handle(get(
         `${baseUrl}/pubhtml`,
         ["Accept", "*/*"],

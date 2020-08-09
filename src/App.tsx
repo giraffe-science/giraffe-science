@@ -15,8 +15,9 @@ import {ResourceCard} from "./ResourceCard";
 import {theme, useClasses} from "./styles";
 
 function hasTag(resource: Resource, tags: Set<string>): boolean {
-    for (const tag of resource.tags) {
-        if (tags.has(tag)) return true;
+    const lowerCaseTags = new Set([...tags].map(t => t.toLowerCase()));
+    for (const tag of resource.tags.map(t => t.toLowerCase())) {
+        if (lowerCaseTags.has(tag)) return true;
     }
     return false;
 }
@@ -35,6 +36,7 @@ function App({loading}: { loading: Promise<Library> }) {
         console.log(error);
 
     function toggleTag(tag: string) {
+        tag = tag.toLowerCase();
         const newTags = new Set(tags);
         if (tags.has(tag))
             newTags.delete(tag)
@@ -48,7 +50,7 @@ function App({loading}: { loading: Promise<Library> }) {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <Container >
+            <Container>
                 <AppBar className={classes.appBar} position="fixed">
                     <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
                     <Grid container justify="center">
@@ -56,11 +58,12 @@ function App({loading}: { loading: Promise<Library> }) {
                             <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
                         </Grid>
                         <Grid item>
-                            <Typography variant="h1" className={classes.h1Scientific} style={{marginBottom:"5px"}}>SCIENTIFIC</Typography>
+                            <Typography variant="h1" className={classes.h1Scientific}
+                                        style={{marginBottom: "5px"}}>SCIENTIFIC</Typography>
                             <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
                         </Grid>
                         <Grid item>
-                            <img alt="" src={fur} style={{height: furHeight, marginLeft:furMargin}}/>
+                            <img alt="" src={fur} style={{height: furHeight, marginLeft: furMargin}}/>
                         </Grid>
                     </Grid>
                     <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
@@ -93,11 +96,12 @@ function App({loading}: { loading: Promise<Library> }) {
                     ? <Grid container spacing={10}>
                         {
                             library.resources
-                                .filter(resource => tags.size === 0 ? true : hasTag(resource, tags)).map((resource, i) =>
-                                <Grid item key={i} xs={12} sm={6} md={4} style={{display: 'flex'}}>
-                                    <ResourceCard resource={resource} i={i}/>
-                                </Grid>
-                            )
+                                .filter(resource => tags.size === 0 ? true : hasTag(resource, tags))
+                                .map((resource, i) =>
+                                    <Grid item key={i} xs={12} sm={6} md={4} style={{display: 'flex'}}>
+                                        <ResourceCard resource={resource} i={i}/>
+                                    </Grid>
+                                )
                         }
 
                     </Grid>

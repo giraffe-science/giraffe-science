@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "library": "ts-node src/scripts/refresh-library.ts"
+    "library": "ts-node refresh-library.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

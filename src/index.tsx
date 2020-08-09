@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {load} from "./google-sheets";
+import library from "./library.json";
 import App from './App';
 import './index.css';
+import {Library} from "./Library";
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
     <React.StrictMode>
-        <App loading={load()}/>
+        <App loading={Promise.resolve(library as Library)}/>
     </React.StrictMode>,
     document.getElementById('root')
 );

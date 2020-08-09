@@ -4,7 +4,7 @@ export type Reference = { type: ReferenceType, value: string, description?: stri
 
 export type Resource = {
     readonly type: string;
-    readonly tags: Set<string>;
+    readonly tags: string[];
     readonly citation?: string;
     readonly summary?: string;
     readonly title?: string;
