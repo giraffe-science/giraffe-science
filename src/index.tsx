@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import library from "./library.json";
 import App from './App';
+import {load} from "./google-sheets";
 import './index.css';
 import {Library} from "./Library";
+import library from "./library.json";
 import * as serviceWorker from './serviceWorker';
+import {AxiosClient} from "./util/http4t/AxiosClient";
+import {RetryHandler} from "./util/http4t/RetryHandler";
 
 ReactDOM.render(
     <React.StrictMode>
-        <App loading={Promise.resolve(library as Library)}/>
+        <App loading={
+            load(new RetryHandler(new AxiosClient()))
+                .catch(e => {
+                    console.log("error loading library", e);
+                    return library as Library;
+                })}/>
     </React.StrictMode>,
     document.getElementById('root')
 );
