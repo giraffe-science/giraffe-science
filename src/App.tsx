@@ -5,6 +5,7 @@ import Chip from "@material-ui/core/Chip";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
+import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, {useState} from 'react';
@@ -51,7 +52,7 @@ function App({loading}: { loading: Promise<Library> }) {
         <ThemeProvider theme={theme}>
             <CssBaseline/>
             <Container>
-                <AppBar className={classes.appBar} position="fixed">
+                <AppBar className={classes.appBar} position="sticky">
                     <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
                     <Grid container justify="center">
                         <Grid item>
@@ -84,7 +85,6 @@ function App({loading}: { loading: Promise<Library> }) {
                     <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
                 </AppBar>
             </Container>
-
             <Container className="App">
 
                 {error && <Card>

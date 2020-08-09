@@ -174,7 +174,5 @@ export async function load(http: HttpHandler): Promise<Library> {
 
     const res = await resources(sheets, sheetLoader, lookup);
 
-    console.log(JSON.stringify(res, null, 2));
-
     return library(res);
 }
