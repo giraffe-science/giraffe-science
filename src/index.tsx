@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {load} from "./google-sheets";
 import App from './App';
-import {load} from "./Library";
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 

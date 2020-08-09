@@ -4,8 +4,9 @@
   "private": true,
   "homepage": "",
   "dependencies": {
-    "@http4t/browser": "^0.0.153",
-    "@http4t/core": "^0.0.153",
+    "@http4t/browser": "^0.0.155",
+    "@http4t/core": "^0.0.155",
+    "@http4t/node": "^0.0.155",
     "@material-ui/core": "^4.10.0",
     "@material-ui/styles": "^4.10.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -16,7 +17,9 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "axios": "^0.19.2",
     "cheerio": "^0.22.0",
+    "follow-redirects": "^1.12.1",
     "papaparse": "^5.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -29,7 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "library": "ts-node src/scripts/refresh-library.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,8 +52,10 @@
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",
+    "@types/follow-redirects": "^1.8.0",
     "@types/papaparse": "^5.0.5",
     "chai": "^4.2.0",
-    "gh-pages": "^3.1.0"
+    "gh-pages": "^3.1.0",
+    "ts-node": "^8.10.2"
   }
 }
