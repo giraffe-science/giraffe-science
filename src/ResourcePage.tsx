@@ -8,6 +8,10 @@ import {ResourceFooter} from "./ResourceFooter";
 import {useClasses} from "./styles";
 import {formatDateForCitation} from "./util/dates";
 
+function href(uri: string) :string{
+    return uri.startsWith("http") ? uri : `http://${uri}`;
+}
+
 export function ResourcePage({library, lookup}: { library: Library, lookup: Lookup }) {
     const {identifierType, identifier} = useParams();
     const [meta, setMeta] = useState<Metadata>();
@@ -45,7 +49,7 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
                   resource.identifiers
                       .filter(id => id.type === "url")
                       .map((id,i) =>
-                      <p><a href={id.value}>{id.value}</a></p>)
+                      <p><a href={href(id.value)}>{id.value}</a></p>)
               }
               {meta && <Typography variant="body2" style={{marginTop: "20px"}}>{[
                   meta.authors.join("; "),
