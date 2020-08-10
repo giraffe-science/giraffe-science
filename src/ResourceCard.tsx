@@ -16,6 +16,7 @@ export function ResourceCard({resource, i}: { resource: Resource, i: number }) {
         if (acc.type === "doi") return acc;
         if (id.type === "doi") return id;
         if (id.type === "url") return id;
+        return acc;
     }, undefined as Identifier | undefined)
 
     return <Card className={classes.resourceCard} key={i}
