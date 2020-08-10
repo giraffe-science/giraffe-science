@@ -7,16 +7,19 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, {useState} from 'react';
-import {BrowserRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch, useHistory} from "react-router-dom";
 import './App.css';
 import fur from "./images/fur.png"
 import {Library} from "./Library";
-import {Resources} from "./Resources";
+import {Lookup} from "./Lookup";
+import {ResourcePage} from "./ResourcePage";
+import {ResourcesPage} from "./ResourcesPage";
 import {theme, useClasses} from "./styles";
 
 
-export function App({loading}: { loading: Promise<Library> }) {
+export function App({loading, lookup}: { loading: Promise<Library>, lookup: Lookup }) {
     const classes = useClasses();
+    const history = useHistory();
     const [error, setError] = useState<any>();
     const [library, setLibrary] = useState<Library>();
 
@@ -37,19 +40,21 @@ export function App({loading}: { loading: Promise<Library> }) {
                 <Container>
                     <AppBar className={classes.appBar} position="sticky">
                         <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
-                        <Grid container justify="center">
-                            <Grid item>
-                                <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
+                        <Link to="/">
+                            <Grid container justify="center">
+                                <Grid item>
+                                    <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="h1" className={classes.h1Scientific}
+                                                style={{marginBottom: "5px"}}>SCIENTIFIC</Typography>
+                                    <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <img alt="" src={fur} style={{height: furHeight, marginLeft: furMargin}}/>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <Typography variant="h1" className={classes.h1Scientific}
-                                            style={{marginBottom: "5px"}}>SCIENTIFIC</Typography>
-                                <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
-                            </Grid>
-                            <Grid item>
-                                <img alt="" src={fur} style={{height: furHeight, marginLeft: furMargin}}/>
-                            </Grid>
-                        </Grid>
+                        </Link>
                         <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
 
                     </AppBar>
@@ -62,7 +67,14 @@ export function App({loading}: { loading: Promise<Library> }) {
                 </Card></Container>}
                 {!library && <Container className="App"><p>Loading...</p></Container>}
 
-                {library && <Resources library={library}/>}
+                <Switch>
+                    <Route path="/resources/:identifierType/:identifier">
+                        {library && <ResourcePage library={library} lookup={lookup}/>}
+                    </Route>
+                    <Route path="/">
+                        {library && <ResourcesPage library={library}/>}
+                    </Route>
+                </Switch>
             </Router>
         </ThemeProvider>
     );

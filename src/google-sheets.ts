@@ -2,11 +2,12 @@ import {bufferText} from "@http4t/core/bodies";
 import {HttpHandler} from "@http4t/core/contract";
 import {get} from "@http4t/core/requests";
 import {load as cheerio} from "cheerio";
-import {Library, Reference, Resource, Tags} from "./Library";
+import {ByIds, Identifier, Library, Resource, Tags} from "./Library";
 import {CachedLookup, CrossRefLookup, Lookup} from "./Lookup";
 import {parseReferences} from "./references";
 import {CheerioSheets, Csv} from "./Sheets";
 import {Complete} from "./util/Complete";
+import {formatDate} from "./util/dates";
 
 type Sheet = {
     readonly id: string;
@@ -67,13 +68,6 @@ function headerLookup(values: string[]): HeaderLookup {
     }, {fields: {}, links: []} as any as HeaderLookup);
 }
 
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
-function formatDate(date: Date | undefined): string | undefined {
-    if (typeof date === "undefined") return;
-    return `${date?.getDay()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-}
-
 async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string, lookup: Lookup): Promise<Resource> {
     const fields = headers.fields;
 
@@ -81,7 +75,7 @@ async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string
         ...parseReferences(row[fields.citation]),
         ...headers.links
             .map(({description, index}) =>
-                ({type: "url", value: row[index], description} as Reference))
+                ({type: "url", value: row[index], description} as Identifier))
             .filter(ref => !isBlank(ref.value))];
 
     const doi = references.find(r => r.type === "doi")?.value;
@@ -93,7 +87,7 @@ async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string
 
     const manualYear = row[fields.year];
     const resourceYear = isBlank(manualYear)
-        ? doi ? formatDate((await lookup.lookup(doi))?.created) : undefined
+        ? doi ? formatDate((await lookup.lookup(doi))?.published) : undefined
         : manualYear;
 
     return removeUndefined<Resource>({
@@ -103,7 +97,7 @@ async function parseRow(row: string[], headers: HeaderLookup, sheetTitle: string
         summary: row[fields.summary],
         title: resourceTitle,
         created: resourceYear,
-        references
+        identifiers: references
     });
 }
 
@@ -157,7 +151,18 @@ function library(resources: Resource[]): Library {
                 return acc;
             }, acc), {} as Tags)
 
-    return {resources: resources, tags};
+    const ids = resources.reduce((acc, resource) => resource.identifiers.reduce((acc, id) => {
+        if (id.type === "doi" || id.type === "url")
+        {
+            const existing = acc[id.type][id.value];
+            if(!existing || resource.summary){
+                acc[id.type][id.value] = resource;
+            }
+        }
+        return acc;
+    }, acc), {doi: {}, issn: {}, pmc: {}, pmid: {}, url: {}} as ByIds)
+
+    return {resources: resources, tags, ids};
 }
 
 export async function load(http: HttpHandler): Promise<Library> {

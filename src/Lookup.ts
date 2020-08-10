@@ -2,21 +2,32 @@ import {bufferText} from "@http4t/core/bodies";
 import {HttpHandler} from "@http4t/core/contract";
 import {get} from "@http4t/core/requests";
 
-type Metadata = {
+export type Metadata = {
     readonly title: string;
-    readonly created: Date;
+    readonly published: Date;
+    readonly publicationTitle: string;
+    readonly authors: string[];
+    readonly doi: string;
+    readonly issn?: string;
 }
 
 export interface Lookup {
     lookup(doi: string): Promise<Metadata | undefined>;
 }
 
-type Crossref = {
+export type Crossref = {
     message: {
         title: string[],
+        DOI:string,
+        ISSN?:string,
         created: {
             timestamp: number
         }
+        "published-print": {
+            timestamp: number
+        },
+        "container-title": string,
+        author: { given: string, family: string, suffix?: string, sequence: "first" | "additional" }[]
     }
 }
 
@@ -32,15 +43,23 @@ export class CrossRefLookup implements Lookup {
             return undefined;
         }
         const json: Crossref = JSON.parse(await bufferText(response.body));
+        const meta = json.message;
         return {
-            title: json.message.title.join(" "),
-            created: new Date(json.message.created.timestamp)
+            title: meta.title.join(" "),
+            doi: meta.DOI,
+            issn:meta.ISSN,
+            published: meta["published-print"]?.timestamp ? new Date(meta["published-print"].timestamp) : new Date(meta.created.timestamp),
+            publicationTitle: meta["container-title"],
+            authors: [
+                ...meta.author.filter(a=>a.sequence==="first").map(a=>`${a.family}, ${a.given}`),
+                ...meta.author.filter(a=>a.sequence!=="first").map(a=>`${a.family}, ${a.given}`)
+            ]
         };
     }
 }
 
 export class CachedLookup implements Lookup {
-    constructor(private readonly decorated: Lookup, private readonly cache: { [doi: string]: Metadata | undefined }={}) {
+    constructor(private readonly decorated: Lookup, private readonly cache: { [doi: string]: Metadata | undefined } = {}) {
 
     }
 

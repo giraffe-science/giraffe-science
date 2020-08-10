@@ -1,6 +1,6 @@
-export type ReferenceType = "doi" | "issn" | "pmid" | "pmc" | "url";
+export type IdentifierType = "doi" | "issn" | "pmid" | "pmc" | "url";
 
-export type Reference = { type: ReferenceType, value: string, description?: string };
+export type Identifier = { type: IdentifierType, value: string, description?: string };
 
 export type Resource = {
     readonly type: string;
@@ -9,12 +9,18 @@ export type Resource = {
     readonly summary?: string;
     readonly title?: string;
     readonly created?: string;
-    readonly references: Reference[];
+    readonly identifiers: Identifier[];
 }
 export type Tags = { [k: string]: Resource[] };
+
+export type ById<T> = { [k: string]: T };
+export type ByIds = {
+    doi: ById<Resource>,
+    url: ById<Resource>,
+};
 
 export type Library = {
     readonly resources: Resource[],
     readonly tags: Tags,
-
+    readonly ids: ByIds,
 }

@@ -1,7 +1,7 @@
-import {Reference, ReferenceType} from "./Library";
+import {Identifier, IdentifierType} from "./Library";
 
-export function parseReferences(citation: string): Reference[] {
-    const regexes: [ReferenceType, RegExp[]][] = [
+export function parseReferences(citation: string): Identifier[] {
+    const regexes: [IdentifierType, RegExp[]][] = [
             ["doi",
                 [
                     // https://www.crossref.org/blog/dois-and-matching-regular-expressions/
@@ -24,5 +24,5 @@ export function parseReferences(citation: string): Reference[] {
             }
         }
         return acc;
-    }, [] as Reference[]);
+    }, [] as Identifier[]);
 }

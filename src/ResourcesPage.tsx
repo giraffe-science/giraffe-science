@@ -13,7 +13,7 @@ function hasTag(resource: Resource, tags: Set<string>): boolean {
     return false;
 }
 
-export function Resources({library}: { library: Library }) {
+export function ResourcesPage({library}: { library: Library }) {
     const [tags, setTags] = useState<Set<string>>(new Set());
 
     function toggleTag(tag: string) {
