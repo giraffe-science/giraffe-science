@@ -96,6 +96,7 @@ function App({loading}: { loading: Promise<Library> }) {
                         {
                             library.resources
                                 .filter(resource => tags.size === 0 ? true : hasTag(resource, tags))
+                                .filter(resource=>resource.type !== "mepedia")
                                 .map((resource, i) =>
                                     <Grid item key={i} xs={12} sm={6} md={4} style={{display: 'flex'}}>
                                         <ResourceCard resource={resource} i={i}/>
