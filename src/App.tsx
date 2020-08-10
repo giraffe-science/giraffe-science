@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, {useState} from 'react';
-import {BrowserRouter as Router, Link, Route, Switch, useHistory} from "react-router-dom";
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import './App.css';
 import fur from "./images/fur.png"
 import {Library} from "./Library";
@@ -19,7 +19,6 @@ import {theme, useClasses} from "./styles";
 
 export function App({loading, lookup}: { loading: Promise<Library>, lookup: Lookup }) {
     const classes = useClasses();
-    const history = useHistory();
     const [error, setError] = useState<any>();
     const [library, setLibrary] = useState<Library>();
 
