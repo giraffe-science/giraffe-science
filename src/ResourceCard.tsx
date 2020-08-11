@@ -38,7 +38,7 @@ export function ResourceCard({resource, i}: { resource: Resource, i: number }) {
                 : <Typography variant="body1">&nbsp;</Typography>}
             <ResourceLinks resource={resource}/>
         </CardContent>
-        <CardActions className={classes.resourceCardActions}>
+        <CardActions style={{margin:"0",padding:"15px 0 0 0"}}>
             {resource.type &&
             <Grid item container alignContent="flex-start" alignItems="flex-start">
               <ResourceFooter resource={resource}/>

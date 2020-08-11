@@ -11,7 +11,6 @@ export type CustomClass =
     | "h1Scientific"
     | "resourceCard"
     | "resourceCardContent"
-    | "resourceCardActions"
     | "resourceLink"
     | "resourceTitle"
     | "resourceType"
@@ -46,10 +45,6 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
         resourceCardContent: {
             textAlign: "left",
             padding: "0"
-        },
-        resourceCardActions: {
-            padding: "15px 0 0 0",
-            margin:"0px"
         },
         resourceLink: {
             textDecoration: "none",
