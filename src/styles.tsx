@@ -49,6 +49,7 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
         },
         resourceCardActions: {
             padding: "15px 0 0 0",
+            margin:"0px"
         },
         resourceLink: {
             textDecoration: "none",
