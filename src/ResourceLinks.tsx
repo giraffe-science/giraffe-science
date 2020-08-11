@@ -1,5 +1,6 @@
 import {Uri} from "@http4t/core/uri";
 import {Icon} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {Resource} from "./Library";
 
@@ -14,8 +15,8 @@ export function ResourceLinks({resource}: { resource: Resource }) {
                 .filter(id => id.type === "url")
                 .map((id, i) => {
                     const url = toUrl(id.value);
-                    return <p key={i}><a href={url}>original: {Uri.of(url)?.authority?.host}<Icon
-                        className="launch"/></a></p>;
+                    return <Typography variant="body2" key={i}>original: <a href={url}>{Uri.of(url)?.authority?.host}<Icon
+                        className="launch"/></a></Typography>;
                 })
         }
     </React.Fragment>;
