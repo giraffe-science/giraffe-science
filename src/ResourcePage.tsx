@@ -5,12 +5,9 @@ import {useParams} from "react-router-dom";
 import {ByIds, Library} from "./Library";
 import {Lookup, Metadata} from "./Lookup";
 import {ResourceFooter} from "./ResourceFooter";
+import {ResourceLinks} from "./ResourceLinks";
 import {useClasses} from "./styles";
 import {formatDateForCitation} from "./util/dates";
-
-function href(uri: string) :string{
-    return uri.startsWith("http") ? uri : `http://${uri}`;
-}
 
 export function ResourcePage({library, lookup}: { library: Library, lookup: Lookup }) {
     const {identifierType, identifier} = useParams();
@@ -45,12 +42,7 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
               {resource.summary
                   ? <Typography variant="body1" style={{marginTop: "20px"}}>{resource.summary}</Typography>
                   : <Typography variant="body1">&nbsp;</Typography>}
-              {
-                  resource.identifiers
-                      .filter(id => id.type === "url")
-                      .map((id,i) =>
-                      <p><a href={href(id.value)}>{id.value}</a></p>)
-              }
+              {<ResourceLinks resource={resource}/>}
               {meta && <Typography variant="body2" style={{marginTop: "20px"}}>{[
                   meta.authors.join("; "),
                   formatDateForCitation(meta.published),

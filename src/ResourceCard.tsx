@@ -7,6 +7,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {Identifier, Resource} from "./Library";
 import {ResourceFooter} from "./ResourceFooter";
+import {ResourceLinks} from "./ResourceLinks";
 import {useClasses} from "./styles";
 
 export function ResourceCard({resource, i}: { resource: Resource, i: number }) {
@@ -35,6 +36,7 @@ export function ResourceCard({resource, i}: { resource: Resource, i: number }) {
                                     color="textSecondary"
                                     key={i}>{text}</Typography>)
                 : <Typography variant="body1">&nbsp;</Typography>}
+            <ResourceLinks resource={resource}/>
         </CardContent>
         <CardActions className={classes.resourceCardActions}>
             {resource.type &&

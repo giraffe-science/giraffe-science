@@ -75,6 +75,7 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
         }
     }
 )));
+const primary = "#B06B32";
 const baseTheme = createMuiTheme({
     typography: {
         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
@@ -86,6 +87,9 @@ const baseTheme = createMuiTheme({
         h2: {
             fontSize: 18,
             color:"#1a1a1a",
+        },
+        h5: {
+            fontFamily: 'Georgia, serif',
         },
         body1 :{
             color: "#323232",
@@ -99,7 +103,7 @@ const baseTheme = createMuiTheme({
             default: "#fff"
         },
         primary: {
-            main: "#B06B32"
+            main: primary
         }
     },
     overrides: {
@@ -108,7 +112,7 @@ const baseTheme = createMuiTheme({
                 '@font-face': [],
                 a: {
                     textDecoration: "none",
-                    color: "rgba(0,0,0,0.87)"
+                    color: primary
                 }
             },
         }
