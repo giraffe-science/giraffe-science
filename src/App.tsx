@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import './App.css';
 import fur from "./images/fur.png"
+import fur2 from "./images/fur-2.png"
 import {Library} from "./Library";
 import {Lookup} from "./Lookup";
 import {ResourcePage} from "./ResourcePage";
@@ -50,7 +51,7 @@ export function App({loading, lookup}: { loading: Promise<Library>, lookup: Look
                                     <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
                                 </Grid>
                                 <Grid item>
-                                    <img alt="" src={fur} style={{height: furHeight, marginLeft: furMargin}}/>
+                                    <img alt="" src={fur2} style={{height: furHeight, marginLeft: furMargin}}/>
                                 </Grid>
                             </Grid>
                         </Link>
@@ -78,5 +79,3 @@ export function App({loading, lookup}: { loading: Promise<Library>, lookup: Look
         </ThemeProvider>
     );
 }
-
-export default App;
