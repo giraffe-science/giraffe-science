@@ -30,7 +30,7 @@ export function App({loading, lookup}: { loading: Promise<Library>, lookup: Look
         console.log(error);
 
 
-    const furHeight = "64px";
+    const furHeight = "62px";
     const furMargin = "8px";
     return (
         <ThemeProvider theme={theme}>
