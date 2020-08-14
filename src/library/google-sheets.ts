@@ -6,8 +6,8 @@ import {ByIds, Identifier, Library, Resource, Tags} from "./Library";
 import {CachedLookup, CrossRefLookup, Lookup} from "./Lookup";
 import {parseReferences} from "./references";
 import {CheerioSheets, Csv} from "./Sheets";
-import {Complete} from "./util/Complete";
-import {formatDate} from "./util/dates";
+import {Complete} from "../util/Complete";
+import {formatDate} from "../util/dates";
 
 type Sheet = {
     readonly id: string;

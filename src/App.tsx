@@ -11,8 +11,8 @@ import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import './App.css';
 import fur from "./images/fur.png"
 import fur2 from "./images/fur-2.png"
-import {Library} from "./Library";
-import {Lookup} from "./Lookup";
+import {Library} from "./library/Library";
+import {Lookup} from "./library/Lookup";
 import {ResourcePage} from "./ResourcePage";
 import {ResourcesPage} from "./ResourcesPage";
 import {theme, useClasses} from "./styles";

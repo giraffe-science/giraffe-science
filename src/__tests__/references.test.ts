@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {parseReferences} from "../references";
+import {parseReferences} from "../library/references";
 
 describe('parseReferences()', () => {
     it('works', async () => {

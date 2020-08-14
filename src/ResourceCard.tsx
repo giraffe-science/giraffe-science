@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {Link} from "react-router-dom";
-import {Identifier, Resource} from "./Library";
+import {Identifier, Resource} from "./library/Library";
 import {ResourceFooter} from "./ResourceFooter";
 import {ResourceLinks} from "./ResourceLinks";
 import {useClasses} from "./styles";

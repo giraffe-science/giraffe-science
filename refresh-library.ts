@@ -1,6 +1,6 @@
 import fs from 'fs';
 import * as path from "path";
-import {load} from "./src/google-sheets";
+import {load} from "./src/library/google-sheets";
 import {CurlClient} from "./src/util/http4t/CurlClient";
 import {RetryHandler} from "./src/util/http4t/RetryHandler";
 

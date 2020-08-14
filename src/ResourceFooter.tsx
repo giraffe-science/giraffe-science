@@ -1,7 +1,7 @@
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import {Resource} from "./Library";
-import {Metadata} from "./Lookup";
+import {Resource} from "./library/Library";
+import {Metadata} from "./library/Lookup";
 import {useClasses} from "./styles";
 import {formatDate} from "./util/dates";
 

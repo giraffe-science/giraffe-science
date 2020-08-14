@@ -2,7 +2,7 @@ import Chip from "@material-ui/core/Chip";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import React, {useState} from "react";
-import {Library, Resource} from "./Library";
+import {Library, Resource} from "./library/Library";
 import {ResourceCard} from "./ResourceCard";
 
 function hasTag(resource: Resource, tags: Set<string>): boolean {
