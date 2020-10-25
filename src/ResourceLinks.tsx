@@ -40,13 +40,13 @@ export function ResourceLinks({resource, count}: { resource: Resource, count?: n
     return <React.Fragment>
         {
             [resourceLink, ...linksToInclude]
-                .map((link, i) => {
+                .map((link) => {
                     const url = toUrl(link.url);
                     return <Typography variant="body2">{link.type || "link"}: <a
                         href={url}>{link.text || Uri.of(url)?.authority?.host}</a></Typography>;
                 })
         }
-        {linksToInclude.length == 0 &&
+        {linksToInclude.length === 0 &&
         <Typography variant="body2">&nbsp;</Typography>
         }
     </React.Fragment>;
