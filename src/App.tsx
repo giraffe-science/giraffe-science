@@ -72,7 +72,7 @@ export function App({loading, lookup}: { loading: Promise<Library>, lookup: Look
                         {library && <ResourcePage library={library} lookup={lookup}/>}
                     </Route>
                     <Route path="/">
-                        {library && <ResourcesPage library={library}/>}
+                        {library && <ResourcesPage library={library} lookup={lookup}/>}
                     </Route>
                 </Switch>
             </Router>

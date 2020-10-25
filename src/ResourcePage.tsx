@@ -1,23 +1,25 @@
 import {Container} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import React, {useState} from "react";
-import {useParams} from "react-router-dom";
-import {ByIds, Library} from "./library/Library";
-import {Lookup, Metadata} from "./library/Lookup";
+import Markdown from 'markdown-to-jsx';
+import React from "react";
+import {useHistory, useParams} from "react-router-dom";
+import {ByIds, getDoi, IdType, Library, Resource} from "./library/Library";
+import {Lookup} from "./library/Lookup";
 import {ResourceFooter} from "./ResourceFooter";
 import {ResourceLinks} from "./ResourceLinks";
 import {useClasses} from "./styles";
+import {Tags} from "./Tags";
+import {useMeta} from "./useMeta";
 import {formatDateForCitation} from "./util/dates";
+
 
 export function ResourcePage({library, lookup}: { library: Library, lookup: Lookup }) {
     const {identifierType, identifier} = useParams();
-    const [meta, setMeta] = useState<Metadata>();
+    const history = useHistory();
     const classes = useClasses();
-    const resource = library.ids[identifierType as keyof ByIds]?.[decodeURIComponent(identifier)];
-    const doi = resource?.identifiers.find(i => i.type === "doi")?.value;
-    if (doi) {
-        lookup.lookup(doi).then(setMeta)
-    }
+    const resource = library.byId[identifierType as keyof ByIds]?.[decodeURIComponent(identifier)];
+    const doi = getDoi(resource);
+    const meta = useMeta(doi, lookup);
     return <React.Fragment>
         {!resource && <p>Resource not found</p>}
         {resource && <Container>
@@ -40,8 +42,10 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
 
           <Container className={classes.content}>
               {resource.summary
-                  ? <Typography variant="body1" style={{marginTop: "20px"}}>{resource.summary}</Typography>
+                  ? <Typography variant="body1" style={{marginTop: "20px"}}><Markdown
+                      options={{disableParsingRawHTML: true}}>{resource.summary}</Markdown></Typography>
                   : <Typography variant="body1">&nbsp;</Typography>}
+              <Tags tags={resource.tags} onClick={(tag)=>history.push(`/?tags=${tag}`)}/>
               {<ResourceLinks resource={resource}/>}
               {meta && <Typography variant="body2" style={{marginTop: "20px"}}>{[
                   meta.authors.join("; "),
