@@ -24,9 +24,13 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
         {!resource && <p>Resource not found</p>}
         {resource && <Container>
           <Container style={{justifyContent: "center"}}>
+            <Container style={{textAlign: "center"}}>
+              <Tags tags={resource.tags} onClick={(tag) => history.push(`/?tags=${tag}`)}/>
+            </Container>
+
               {meta?.publicationTitle &&
               <Container style={{width: "100%"}}>
-                <Typography style={{textAlign: "center"}} variant="h2">{meta?.publicationTitle}</Typography>
+                <Typography style={{textAlign: "center", marginTop:"15px"}} variant="h2">{meta?.publicationTitle}</Typography>
               </Container>}
 
             <Container style={{maxWidth: "900px", paddingTop: "10px", paddingBottom: "10px"}}>
@@ -45,7 +49,7 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
                   ? <Typography variant="body1" style={{marginTop: "20px"}}><Markdown
                       options={{disableParsingRawHTML: true}}>{resource.summary}</Markdown></Typography>
                   : <Typography variant="body1">&nbsp;</Typography>}
-              <Tags tags={resource.tags} onClick={(tag)=>history.push(`/?tags=${tag}`)}/>
+
               {<ResourceLinks resource={resource}/>}
               {meta && <Typography variant="body2" style={{marginTop: "20px"}}>{[
                   meta.authors.join("; "),
