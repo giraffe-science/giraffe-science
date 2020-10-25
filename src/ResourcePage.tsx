@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Markdown from 'markdown-to-jsx';
 import React from "react";
 import {useHistory, useParams} from "react-router-dom";
-import {ByIds, getDoi, IdType, Library, Resource} from "./library/Library";
+import {ByIds, getDoi, Library} from "./library/Library";
 import {Lookup} from "./library/Lookup";
 import {ResourceFooter} from "./ResourceFooter";
 import {ResourceLinks} from "./ResourceLinks";

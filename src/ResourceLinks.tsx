@@ -1,5 +1,4 @@
 import {Uri} from "@http4t/core/uri";
-import {Icon} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {IdType, Link, Resource} from "./library/Library";
