@@ -1,5 +1,4 @@
 import Container from "@material-ui/core/Container";
-import Markdown from "markdown-to-jsx";
 import React from "react";
 import {GiraffeMarkdown} from "./components/GiraffeMarkdown";
 

@@ -10,7 +10,6 @@ import React, {useState} from 'react';
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import './App.css';
 import {Users} from "./auth/Users";
-import {SignInButton} from "./components/SignInButton";
 import fur2 from "./images/fur-2.png"
 import fur from "./images/fur.png"
 import {Library} from "./library/Library";
