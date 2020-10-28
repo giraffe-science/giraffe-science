@@ -82,14 +82,15 @@ const baseTheme = createMuiTheme({
             color:"#1a1a1a",
         },
         h2: {
+            fontFamily: 'Georgia, serif',
             fontSize: 24,
-            fontWeight:"bold",
             color:"#B06B32",
+            marginTop:"30px"
         },
         h3: {
             fontSize: 20,
-            fontWeight:"bold",
             color:"#585858",
+            marginTop:"30px"
         },
         h5: {
             fontFamily: 'Georgia, serif',
