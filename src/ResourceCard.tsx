@@ -3,9 +3,9 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Markdown from "markdown-to-jsx";
 import React from "react";
 import {Link} from "react-router-dom";
+import {GiraffeMarkdown} from "./components/GiraffeMarkdown";
 import {getDoi, Resource} from "./library/Library";
 import {Lookup} from "./library/Lookup";
 import {ResourceFooter} from "./ResourceFooter";
@@ -28,8 +28,7 @@ export function ResourceCard({resource, i, lookup}: { resource: Resource, i: num
                             variant="h5"
                             component="h5">{resource.title}</Typography></Link>
             {resource.summary
-                ? <Typography variant="body1" color="textSecondary"><Markdown
-                    options={{disableParsingRawHTML: true}}>{resource.summary}</Markdown></Typography>
+                ? <GiraffeMarkdown color="textSecondary">{resource.summary}</GiraffeMarkdown>
                 : <Typography variant="body1">&nbsp;</Typography>}
 
         </CardContent>

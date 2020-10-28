@@ -23,7 +23,8 @@ export const useClasses: (props?: any) => ClassNameMap<CustomClass> = makeStyles
             boxShadow: "none"
         },
         content: {
-            maxWidth: "750px"
+            maxWidth: "750px",
+            minHeight: "750px"
         },
         contentText: {
             marginTop:"20px"
@@ -81,8 +82,14 @@ const baseTheme = createMuiTheme({
             color:"#1a1a1a",
         },
         h2: {
-            fontSize: 18,
-            color:"#1a1a1a",
+            fontSize: 24,
+            fontWeight:"bold",
+            color:"#B06B32",
+        },
+        h3: {
+            fontSize: 20,
+            fontWeight:"bold",
+            color:"#585858",
         },
         h5: {
             fontFamily: 'Georgia, serif',

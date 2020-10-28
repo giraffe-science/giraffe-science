@@ -9,16 +9,19 @@ import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import React, {useState} from 'react';
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import './App.css';
-import fur from "./images/fur.png"
+import {Users} from "./auth/Users";
+import {SignInButton} from "./components/SignInButton";
 import fur2 from "./images/fur-2.png"
+import fur from "./images/fur.png"
 import {Library} from "./library/Library";
 import {Lookup} from "./library/Lookup";
+import {PrivacyPolicy} from "./PrivacyPolicy";
 import {ResourcePage} from "./ResourcePage";
 import {ResourcesPage} from "./ResourcesPage";
 import {theme, useClasses} from "./styles";
+import {TermsOfService} from "./TermsOfService";
 
-
-export function App({loading, lookup}: { loading: Promise<Library>, lookup: Lookup }) {
+export function App({loading, lookup, users}: { loading: Promise<Library>, lookup: Lookup, users: Users }) {
     const classes = useClasses();
     const [error, setError] = useState<any>();
     const [library, setLibrary] = useState<Library>();
@@ -41,22 +44,27 @@ export function App({loading, lookup}: { loading: Promise<Library>, lookup: Look
                     <AppBar className={classes.appBar} position="sticky">
                         <div style={{borderBottom: "1px solid #999", marginBottom: "10px"}}>&nbsp;</div>
                         <Link to="/">
-                            <Grid container justify="center">
-                                <Grid item>
-                                    <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
+                            <Grid container>
+                                <Grid container item xs={3} justify="flex-start" alignItems="center"/>
+                                <Grid container item justify="center" xs={6}>
+                                    <Grid item>
+                                        <img alt="" src={fur} style={{height: furHeight, marginRight: furMargin}}/>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant="h1" className={classes.h1Scientific}
+                                                    style={{marginBottom: "5px"}}>SCIENTIFIC</Typography>
+                                        <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <img alt="" src={fur2} style={{height: furHeight, marginLeft: furMargin}}/>
+                                    </Grid>
                                 </Grid>
-                                <Grid item>
-                                    <Typography variant="h1" className={classes.h1Scientific}
-                                                style={{marginBottom: "5px"}}>SCIENTIFIC</Typography>
-                                    <Typography variant="h1" className={classes.h1Giraffe}>GIRAFFE</Typography>
-                                </Grid>
-                                <Grid item>
-                                    <img alt="" src={fur2} style={{height: furHeight, marginLeft: furMargin}}/>
+                                <Grid container item xs={3} justify="flex-end" alignItems="center">
+                                    {/*<SignInButton users={users}/>*/}
                                 </Grid>
                             </Grid>
                         </Link>
                         <div style={{borderTop: "1px solid #999", marginTop: "10px"}}>&nbsp;</div>
-
                     </AppBar>
                 </Container>
                 {error &&
@@ -71,10 +79,29 @@ export function App({loading, lookup}: { loading: Promise<Library>, lookup: Look
                     <Route path="/resources/:identifierType/:identifier">
                         {library && <ResourcePage library={library} lookup={lookup}/>}
                     </Route>
+                    <Route path="/privacy">
+                        <PrivacyPolicy/>
+                    </Route>
+                    <Route path="/tos">
+                        <TermsOfService/>
+                    </Route>
                     <Route path="/">
                         {library && <ResourcesPage library={library} lookup={lookup}/>}
                     </Route>
                 </Switch>
+                <Container>
+                    <div style={{borderTop: "1px solid #999", marginTop: "10px"}}/>
+                    <Grid container
+                          justify="center"
+                          spacing={1}
+                          alignContent="center"
+                          alignItems="center"
+                          style={{minHeight:"40px"}}>
+                        <Grid item>
+                            <Link to={"/privacy"}>privacy</Link> | <Link to={"/tos"}>terms of service</Link>
+                        </Grid>
+                    </Grid>
+                </Container>
             </Router>
         </ThemeProvider>
     );

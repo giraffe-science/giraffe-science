@@ -1,8 +1,8 @@
 import {Container} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import Markdown from 'markdown-to-jsx';
 import React from "react";
 import {useHistory, useParams} from "react-router-dom";
+import {GiraffeMarkdown} from "./components/GiraffeMarkdown";
 import {ByIds, getDoi, Library} from "./library/Library";
 import {Lookup} from "./library/Lookup";
 import {ResourceFooter} from "./ResourceFooter";
@@ -30,7 +30,13 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
 
               {meta?.publicationTitle &&
               <Container style={{width: "100%"}}>
-                <Typography style={{textAlign: "center", marginTop:"15px"}} variant="h2">{meta?.publicationTitle}</Typography>
+                <Typography style={{
+                    textAlign: "center",
+                    marginTop: "15px",
+                    fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+                    fontSize: 18,
+                    color:"#1a1a1a"
+                }}>{meta?.publicationTitle}</Typography>
               </Container>}
 
             <Container style={{maxWidth: "900px", paddingTop: "10px", paddingBottom: "10px"}}>
@@ -46,8 +52,7 @@ export function ResourcePage({library, lookup}: { library: Library, lookup: Look
 
           <Container className={classes.content}>
               {resource.summary
-                  ? <Typography variant="body1" style={{marginTop: "20px"}}><Markdown
-                      options={{disableParsingRawHTML: true}}>{resource.summary}</Markdown></Typography>
+                  ? <GiraffeMarkdown>{resource.summary}</GiraffeMarkdown>
                   : <Typography variant="body1">&nbsp;</Typography>}
 
               {<ResourceLinks resource={resource}/>}

@@ -42,7 +42,7 @@ export function ResourceLinks({resource, count}: { resource: Resource, count?: n
             [resourceLink, ...linksToInclude]
                 .map((link) => {
                     const url = toUrl(link.url);
-                    return <Typography variant="body2">{link.type || "link"}: <a
+                    return <Typography variant="body2" key={link.url}>{link.type || "link"}: <a
                         href={url}>{link.text || Uri.of(url)?.authority?.host}</a></Typography>;
                 })
         }
