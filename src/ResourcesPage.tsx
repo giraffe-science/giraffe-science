@@ -19,7 +19,6 @@ export function ResourcesPage({library, lookup}: { library: Library, lookup: Loo
     const tags = new Set((new URLSearchParams(location.search).get('tags') || "").split(",").filter(x=>x));
     const history = useHistory();
 
-    console.log("tags",tags);
     function toggleTag(tag: string) {
         const newTags = new Set(tags);
         if (tags.has(tag))

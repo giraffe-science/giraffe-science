@@ -11,7 +11,6 @@ type ConfirmSignup = {
 
 export interface Users {
     signup(signup: Signup): Promise<ISignUpResult>;
-
     confirm(confirm: ConfirmSignup): Promise<ISignUpResult>;
 }
 

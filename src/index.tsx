@@ -1,20 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {App} from './App';
+import {Facebook} from "./auth/Facebook";
+import {FeatureFlags} from "./FeatureFlags";
 import './index.css';
-import {CognitoUsers} from "./auth/Users";
 import {Library} from "./library/Library";
 import library from "./library/library.json";
 import {CachedLookup, CrossRefLookup} from "./library/Lookup";
 import * as serviceWorker from './serviceWorker';
+import {ErrorReports} from "./util/ErrorReports";
 import {AxiosClient} from "./util/http4t/AxiosClient";
+
+const errors = new ErrorReports().add((e: any) => console.log("error", e));
 
 ReactDOM.render(
     <React.StrictMode>
         <App
             lookup={new CachedLookup(new CrossRefLookup(new AxiosClient()))}
             loading={Promise.resolve(library as any as Library)}
-            users={CognitoUsers.connect("us-east-1_9XMxeT7Ba", "6l3c66aae8gajeatfue4s3hal8")}
+            facebook={new Facebook(errors)}
+            errors={errors}
+            flags={new FeatureFlags()}
         />
     </React.StrictMode>,
     document.getElementById('root')
