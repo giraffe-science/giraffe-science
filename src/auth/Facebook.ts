@@ -57,7 +57,7 @@ export class Facebook {
                 },
                 {
                     return_scopes: true,
-                    scope: "email,groups_access_member_info_description"
+                    scope: "groups_access_member_info,email,publish_to_groups"
                 }))
         })
     }
