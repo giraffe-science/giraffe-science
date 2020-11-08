@@ -2,10 +2,10 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
 import {useHistory, useLocation} from "react-router-dom";
-import {Library, Resource} from "./library/Library";
-import {Lookup} from "./library/Lookup";
-import {ResourceCard} from "./ResourceCard";
-import {Tags} from "./Tags";
+import {Library, Resource} from "../library/Library";
+import {Lookup} from "../library/Lookup";
+import {ResourceCard} from "../components/ResourceCard";
+import {Tags} from "../components/Tags";
 
 function hasTag(resource: Resource, tags: Set<string>): boolean {
     for (const tag of resource.tags.map(t => t.id)) {

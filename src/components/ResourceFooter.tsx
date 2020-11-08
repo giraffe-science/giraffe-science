@@ -1,9 +1,9 @@
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import {Resource} from "./library/Library";
-import {Metadata} from "./library/Lookup";
-import {useClasses} from "./styles";
-import {formatDate} from "./util/dates";
+import {Resource} from "../library/Library";
+import {Metadata} from "../library/Lookup";
+import {useClasses} from "../styles";
+import {formatDate} from "../util/dates";
 
 export function ResourceFooter({resource, meta}: { resource: Resource, meta?: Metadata }) {
     const classes = useClasses();

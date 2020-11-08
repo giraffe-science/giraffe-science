@@ -1,6 +1,6 @@
 import Chip from "@material-ui/core/Chip";
 import React from "react";
-import {Tag} from "./library/Library";
+import {Tag} from "../library/Library";
 
 export function Tags({tags, onClick, selected = new Set()}: { tags: Tag[], selected?: Set<string>, onClick: (tag: string) => void }) {
     return <React.Fragment>

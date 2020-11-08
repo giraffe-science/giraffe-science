@@ -2,15 +2,15 @@ import {Container} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {useHistory, useParams} from "react-router-dom";
-import {GiraffeMarkdown} from "./components/GiraffeMarkdown";
-import {ByIds, getDoi, Library} from "./library/Library";
-import {Lookup} from "./library/Lookup";
-import {ResourceFooter} from "./ResourceFooter";
-import {ResourceLinks} from "./ResourceLinks";
-import {useClasses} from "./styles";
-import {Tags} from "./Tags";
-import {useMeta} from "./useMeta";
-import {formatDateForCitation} from "./util/dates";
+import {GiraffeMarkdown} from "../components/GiraffeMarkdown";
+import {ByIds, getDoi, Library} from "../library/Library";
+import {Lookup} from "../library/Lookup";
+import {ResourceFooter} from "../components/ResourceFooter";
+import {ResourceLinks} from "../components/ResourceLinks";
+import {useClasses} from "../styles";
+import {Tags} from "../components/Tags";
+import {useMeta} from "../useMeta";
+import {formatDateForCitation} from "../util/dates";
 
 
 export function ResourcePage({library, lookup}: { library: Library, lookup: Lookup }) {

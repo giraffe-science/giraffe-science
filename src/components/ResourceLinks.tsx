@@ -1,7 +1,7 @@
 import {Uri} from "@http4t/core/uri";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import {IdType, Link, Resource} from "./library/Library";
+import {IdType, Link, Resource} from "../library/Library";
 
 function toUrl(uri: string): string {
     return uri.startsWith("http") ? uri : `http://${uri}`;

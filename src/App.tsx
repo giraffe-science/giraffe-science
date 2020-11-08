@@ -16,11 +16,11 @@ import fur2 from "./images/fur-2.png"
 import fur from "./images/fur.png"
 import {Library} from "./library/Library";
 import {Lookup} from "./library/Lookup";
-import {PrivacyPolicy} from "./PrivacyPolicy";
-import {ResourcePage} from "./ResourcePage";
-import {ResourcesPage} from "./ResourcesPage";
+import {PrivacyPolicy} from "./pages/PrivacyPolicy";
+import {ResourcePage} from "./pages/ResourcePage";
+import {ResourcesPage} from "./pages/ResourcesPage";
 import {theme, useClasses} from "./styles";
-import {TermsOfService} from "./TermsOfService";
+import {TermsOfService} from "./pages/TermsOfService";
 import {ErrorReports} from "./util/ErrorReports";
 
 export type Props = { loading: Promise<Library>, lookup: Lookup, facebook: Facebook, errors: ErrorReports, flags: FeatureFlags };

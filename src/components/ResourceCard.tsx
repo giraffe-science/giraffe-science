@@ -5,13 +5,13 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import {Link} from "react-router-dom";
-import {GiraffeMarkdown} from "./components/GiraffeMarkdown";
-import {getDoi, Resource} from "./library/Library";
-import {Lookup} from "./library/Lookup";
+import {GiraffeMarkdown} from "./GiraffeMarkdown";
+import {getDoi, Resource} from "../library/Library";
+import {Lookup} from "../library/Lookup";
 import {ResourceFooter} from "./ResourceFooter";
 import {ResourceLinks} from "./ResourceLinks";
-import {useClasses} from "./styles";
-import {useMeta} from "./useMeta";
+import {useClasses} from "../styles";
+import {useMeta} from "../useMeta";
 
 export function ResourceCard({resource, i, lookup}: { resource: Resource, i: number, lookup: Lookup }) {
     const classes = useClasses();

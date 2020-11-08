@@ -1,6 +1,6 @@
 import Container from "@material-ui/core/Container";
 import React from "react";
-import {GiraffeMarkdown} from "./components/GiraffeMarkdown";
+import {GiraffeMarkdown} from "../components/GiraffeMarkdown";
 
 const text = `
 # Scientific Giraffe Privacy Policy
