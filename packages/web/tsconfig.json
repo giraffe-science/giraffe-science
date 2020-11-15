@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "references": [],
+  "include":["./src/**/*", "./src/**/*.json"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "noEmit": true
+  }
+}

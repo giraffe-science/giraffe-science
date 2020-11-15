@@ -15,8 +15,7 @@ function link(resource: Resource): Link {
             return {type: "original", url: resource.id.value}
         default:
             // @ts-ignore
-            /* eslint-disable @typescript-eslint/no-unused-vars */
-            const _exhaustiveCheck: never = resource.id.type;
+            const _: never = resource.id.type;
             throw new Error(resource.id.type);
     }
 }

@@ -1,75 +1,17 @@
 {
-  "name": "giraffe.science",
-  "version": "0.1.0",
+  "name": "@scientific-giraffe/root",
+  "version": "1.0.0",
+  "description": "Science, for giraffes",
   "private": true,
-  "homepage": "",
-  "type": "module",
-  "dependencies": {
-    "@deckchair-technicians/vice": "^0.1.9",
-    "@http4t/browser": "^0.0.155",
-    "@http4t/core": "^0.0.155",
-    "@http4t/node": "^0.0.155",
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@material-ui/styles": "^4.10.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "airtable": "^0.9.0",
-    "amazon-cognito-identity-js": "^4.5.0",
-    "axios": "^0.19.2",
-    "cheerio": "^0.22.0",
-    "follow-redirects": "^1.12.1",
-    "papaparse": "^5.2.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-icons": "^3.11.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "typescript": "~3.7.2",
-    "uuid": "^8.3.1"
-  },
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build",
-    "start": "HTTPS=true react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "library": "tsc refresh-library.ts"
+    "build": "tsc -b -v",
+    "clean": "tsc -b --clean"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/airtable": "^0.8.0",
-    "@types/chai": "^4.2.12",
-    "@types/cheerio": "^0.22.21",
-    "@types/facebook-js-sdk": "^3.3.1",
-    "@types/follow-redirects": "^1.8.0",
-    "@types/jest": "^24.0.0",
-    "@types/markdown-to-jsx": "^6.11.2",
-    "@types/node": "^12.0.0",
-    "@types/papaparse": "^5.0.5",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/uuid": "^8.3.0",
-    "chai": "^4.2.0",
-    "gh-pages": "^3.1.0",
-    "ts-node": "^8.10.2",
-    "markdown-to-jsx": "^7.0.1"
+  "license": "none",
+  "workspaces": [
+    "packages/"
+  ],
+  "dependencies": {
+    "typescript": "^3.5.3"
   }
 }
