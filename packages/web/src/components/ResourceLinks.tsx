@@ -14,11 +14,12 @@ function link(resource: Resource): Link {
         case IdType.url:
             return {type: "original", url: resource.id.value}
         default:
-            // noinspection JSUnusedLocalSymbols
-            // @ts-ignore
-            const _: never = resource.id.type;
-            throw new Error(resource.id.type);
+            assertUnreachable(resource.id.type);
     }
+}
+
+export function assertUnreachable(value: never): never {
+    throw new Error(`Did not expect value ${JSON.stringify(value)}`);
 }
 
 const linkTypePriority: { [k: string]: number } = ["article", "article abstract", "pdf"].reduce((acc, type, i) => {
