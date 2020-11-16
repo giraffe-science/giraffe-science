@@ -18,11 +18,10 @@ jobs:
       - name: Install Packages
         run: yarn --cwd packages/web install
       - name: Build page
-        run: yarn --cwd packages/web run build
+        run: yarn --cwd packages/web run build; cp ./packages/web/build ./public;
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./packages/web/build
-          destination_dir: ./
+          publish_dir: ./public
           cname: giraffe.science
