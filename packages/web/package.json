@@ -28,6 +28,26 @@
     "typescript": "~3.7.2",
     "uuid": "^8.3.1"
   },
+  "devDependencies": {
+    "@craco/craco": "^5.8.0",
+    "@types/airtable": "^0.8.0",
+    "@types/chai": "^4.2.12",
+    "@types/cheerio": "^0.22.21",
+    "@types/facebook-js-sdk": "^3.3.1",
+    "@types/follow-redirects": "^1.8.0",
+    "@types/jest": "^24.0.0",
+    "@types/markdown-to-jsx": "^6.11.2",
+    "@types/node": "^12.0.0",
+    "@types/papaparse": "^5.0.5",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/uuid": "^8.3.0",
+    "chai": "^4.2.0",
+    "gh-pages": "^3.1.0",
+    "ts-node": "^8.10.2",
+    "markdown-to-jsx": "^7.0.1"
+  },
   "scripts": {
     "start": "HTTPS=true craco start",
     "build": "craco build",
@@ -51,25 +71,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@craco/craco": "^5.8.0",
-    "@types/airtable": "^0.8.0",
-    "@types/chai": "^4.2.12",
-    "@types/cheerio": "^0.22.21",
-    "@types/facebook-js-sdk": "^3.3.1",
-    "@types/follow-redirects": "^1.8.0",
-    "@types/jest": "^24.0.0",
-    "@types/markdown-to-jsx": "^6.11.2",
-    "@types/node": "^12.0.0",
-    "@types/papaparse": "^5.0.5",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/uuid": "^8.3.0",
-    "chai": "^4.2.0",
-    "gh-pages": "^3.1.0",
-    "ts-node": "^8.10.2",
-    "markdown-to-jsx": "^7.0.1"
   }
 }
