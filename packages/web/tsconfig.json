@@ -2,7 +2,6 @@
   "extends": "../../tsconfig-base.json",
   "references": [],
   "include":["./src/**/*", "./src/**/*.json"],
-  "exclude": ["craco.config.js"],
   "compilerOptions": {
     "resolveJsonModule": true,
     "experimentalDecorators": true,

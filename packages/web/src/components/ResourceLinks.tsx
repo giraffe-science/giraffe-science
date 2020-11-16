@@ -14,6 +14,7 @@ function link(resource: Resource): Link {
         case IdType.url:
             return {type: "original", url: resource.id.value}
         default:
+            // noinspection JSUnusedLocalSymbols
             // @ts-ignore
             const _: never = resource.id.type;
             throw new Error(resource.id.type);
