@@ -24,4 +24,5 @@ jobs:
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./packages/web/build
+          destination_dir: ./
           cname: giraffe.science
