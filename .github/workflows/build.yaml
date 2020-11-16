@@ -16,12 +16,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Packages
-        run: npm install
+        run: yarn install
       - name: Build page
-        run: npm run build
+        run: yarn --cwd packages/web run build
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./build
+          publish_dir: ./packages/web/build
           cname: giraffe.science
