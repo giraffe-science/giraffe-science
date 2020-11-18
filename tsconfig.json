@@ -2,7 +2,13 @@
   "files": [],
   "references": [
     {
-      "path": "./packages/web"
+      "path": "./packages/frontend"
+    },
+    {
+      "path": "./packages/backend/src"
+    },
+    {
+      "path": "./packages/core/src"
     }
   ]
 }

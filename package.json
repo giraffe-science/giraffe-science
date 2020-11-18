@@ -9,7 +9,9 @@
   },
   "license": "none",
   "workspaces": [
-    "packages/"
+    "packages/web",
+    "packages/backend/src",
+    "packages/core/src"
   ],
   "dependencies": {
     "typescript": "^3.5.3"

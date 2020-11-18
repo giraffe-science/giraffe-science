@@ -1,0 +1,17 @@
+{
+  "name": "@scientific-giraffe/server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm ./index.ts"
+  },
+  "dependencies": {
+    "@http4t/bidi": "^0.0.158",
+    "@http4t/core": "^0.0.158",
+    "@http4t/node": "^0.0.158",
+    "@http4t/result": "^0.0.158",
+    "@scientific-giraffe/core": "1.0.0",
+    "@types/node": "^14.14.8",
+    "ts-node": "v8.10.1"
+  }
+}

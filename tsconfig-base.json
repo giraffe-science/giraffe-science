@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-
         "declaration": true,
         "target": "es5",
         "lib": [
@@ -31,5 +30,8 @@
         "isolatedModules": true,
         "noEmit": false,
         "jsx": "react"
-    }
+    },
+    "exclude": [
+        "node_modules"
+    ]
 }

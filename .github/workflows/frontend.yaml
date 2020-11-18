@@ -16,9 +16,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Packages
-        run: yarn --cwd packages/web install
+        run: yarn --cwd packages/frontend install
       - name: Build page
-        run: yarn --cwd packages/web run build; cp -R ./packages/web/build ./public;
+        run: yarn --cwd packages/frontend run build; cp -R ./packages/frontend/build ./public;
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
