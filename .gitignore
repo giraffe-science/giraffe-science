@@ -28,3 +28,4 @@ scratch
 *.d.ts
 *.d.ts.map
 *.js.map
+*.js

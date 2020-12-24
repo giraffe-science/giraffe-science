@@ -21,5 +21,8 @@ export class CdkBootstrapStack extends cdk.Stack {
 }
 
 new CdkBootstrapStack(app, 'CdkBootstrapStack', {
-    description: "Used to create the IAM role that will be used by AWS CDK.\nIntended to be run with AWS account root credentials."
+    description: `Used to create the IAM role that will be used by AWS CDK.
+    Intended to be run with AWS account root credentials.
+    
+    Once run, create access token(s) for the 'cdk' user`
 })
