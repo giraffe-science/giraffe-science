@@ -4,9 +4,8 @@ import * as route53 from "@aws-cdk/aws-route53";
 import {PublicHostedZone} from "@aws-cdk/aws-route53";
 import * as cdk from "@aws-cdk/core";
 import {Duration} from "@aws-cdk/core";
+import * as magic from 'aws-cdk-ses-domain-identity'
 import 'source-map-support/register';
-
-const app = new cdk.App();
 
 function gandiMail(zone: PublicHostedZone) {
     const stack = zone.stack;
@@ -125,10 +124,16 @@ function githubPages(zone: PublicHostedZone) {
         ttl: Duration.minutes(5),
     });
 }
+export type ApiStackProps = {
+    id:string,
+    domainName:string,
+}
 
 export class ApiStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-        super(scope, id, props);
+    constructor(scope: cdk.Construct, props: ApiStackProps) {
+        super(scope, props.id, {
+            description: "Scientific Giraffe Api"
+        });
 
         const apiFunction = new Function(this, 'apiFunction', {
             code: new AssetCode('src'),
@@ -143,11 +148,14 @@ export class ApiStack extends cdk.Stack {
         });
 
         const zone = new route53.PublicHostedZone(this, "giraffeScienceZone", {
-            zoneName: "giraffe.science"
+            zoneName: props.domainName
         });
         gandiMail(zone);
         githubPages(zone);
+        new magic.DnsValidatedDomainIdentity(this, "sesDomainIdentity", {
+            domainName: props.domainName,
+            dkim:true,
+            hostedZone:zone
+        })
     }
 }
-
-new ApiStack(app, 'ApiStack')
