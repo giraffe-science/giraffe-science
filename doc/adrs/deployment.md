@@ -16,6 +16,8 @@ We want to deploy our backend services to AWS
 
 Use AWS CDK
 
+[cdk](https://aws.amazon.com/cdk/)
+
 ## Consequences
 
 ### Good
