@@ -3,26 +3,21 @@ import {Group, ManagedPolicy, User} from "@aws-cdk/aws-iam";
 import * as cdk from '@aws-cdk/core';
 import 'source-map-support/register';
 
-const app = new cdk.App();
+export interface CdkBootstrapProps extends cdk.StackProps {
+    environmentName: string
+}
 
 export class CdkBootstrapStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-        super(scope, id, props);
+    constructor(scope: cdk.Construct, id: string, props: CdkBootstrapProps) {
+        super(scope, id, {description: "User and group used by CDK to deploy", ...props});
 
         const deployers = new Group(this, 'deployersGroup', {
-            groupName: "deployers",
+            groupName: `deployers-${props.environmentName}`,
             managedPolicies: [ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess")],
         });
         new User(this, 'cdkUser', {
-            userName: "cdk",
+            userName: `cdk-${props.environmentName}`,
             groups: [deployers]
         });
     }
 }
-
-new CdkBootstrapStack(app, 'CdkBootstrapStack', {
-    description: `Used to create the IAM role that will be used by AWS CDK.
-    Intended to be run with AWS account root credentials.
-    
-    Once run, create access token(s) for the 'cdk' user`
-})

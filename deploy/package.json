@@ -8,7 +8,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk --profile giraffe-cdk"
+    "cdk": "cdk"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.74.0",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@aws-cdk/core": "1.80.0",
     "@aws-cdk/aws-apigateway": "1.80.0",
+    "@aws-cdk/aws-cognito": "1.80.0",
     "@aws-cdk/aws-lambda": "1.80.0",
     "@aws-cdk/aws-route53": "1.80.0",
     "@aws-cdk/aws-ses": "1.80.0",

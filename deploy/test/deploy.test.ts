@@ -4,7 +4,7 @@ import {ApiStack} from "../lib/api-stack";
 
 test('Empty Stack', () => {
     const app = new cdk.App();
-    const stack = new ApiStack(app, 'MyTestStack');
+    const stack = new ApiStack(app, 'SgApi', 'MyTestStack');
     expectCDK(stack).to(matchTemplate({
         "Resources": {}
     }, MatchStyle.EXACT))

@@ -8,7 +8,7 @@ We want to deploy our backend services to AWS
 
 * Easy to understand
 * Easy to change, safely
-* Repeatable
+* Repeatable (manual tinkering is risky with brainfog)
 * Zero budget
 * Ideally a single way to define our whole infrastructure
 

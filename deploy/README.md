@@ -1,46 +1,83 @@
-## How we set up a new AWS account
+## Checklist when changing infrastructure
+
+
+## How we set up a new AWS environment/account
+
+We use AWS CDK to deploy infrastructure, for reasons documented 
+[here](../doc/adrs/deployment.md).
+
+We use one account per environment, so it's easier to reason about permissions when
+we lock down prod.
+ 
+We do not currently use AWS Organisations, to keep complexity low, but might do in future.
+
+We chose `us-west-2` for our main region, for reasons documented 
+[here](../doc/adrs/aws-region.md)
+
+### Create new environment config
+
+Add config details to [bin/config.ts](bin/config.ts)
+
+> NB: do not check in account number. Use an environment variable instead, e.g.:
+> `expectEnv('SCIENTIFIC_GIRAFFE_PROD_ACCOUNT')`
+
+### Prepare the AWS account
+
+1) Create the AWS account
+1) Move SES out of sandbox mode:
+   https://docs.aws.amazon.com/ses/latest/DeveloperGuide/request-production-access.html
+   > NB: this needs to be done once for each region
+1) Make sure the root user has MFA configured
 
 ### Bootstrap CDK
 
-We use AWS CDK to deploy infrastructure, for reasons documented [here](../doc/adrs/deployment.md).
-
-1) Create the AWS account
-2) Create an access key for the root user **and delete it at the end of these steps**
-3) Bootstrap CDK in `us-east` https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html
+1) Create an access key for the root user **and delete it at the end of these steps**
+1) Bootstrap CDK in the region you're targetting https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html
 
    ```
    ACCOUNT={{account}}
-   REGION=us-east-1
-   AWS_ACCESS_KEY_ID={{access key}} 
-   AWS_SECRET_ACCESS_KEY={{secret key}} 
+   REGION={{region}}
+   AWS_ACCESS_KEY_ID={{access key}} # root account 
+   AWS_SECRET_ACCESS_KEY={{secret key}} # root account 
    yarn run cdk bootstrap aws://$ACCOUNT/$REGION
    ```
 
-4) Create IAM user and groups ready for CDK to use 
+1) Create IAM user and groups ready for CDK to use using 
+   [bin/deploy-cdk-bootstrap.ts](bin/deploy-cdk-bootstrap.ts)
 
    ```
-   AWS_ACCESS_KEY_ID={{access key}} AWS_SECRET_ACCESS_KEY={{secret key}} yarn run cdk deploy -a "npx ts-node bin/bootstrap.ts"
+   AWS_ACCESS_KEY_ID={{access key}} # root account 
+   AWS_SECRET_ACCESS_KEY={{secret key}} # root account 
+   SCIENTIFIC_GIRAFFE_ENV={{env}} 
+   yarn run cdk deploy -a "npx ts-node bin/deploy-cdk-bootstrap.ts"
    ```
 
-5) Delete the access key for the root user
-6) Create an access key for the `cdk` user https://console.aws.amazon.com/iam/home#/users/cdk?section=security_credentials
-7) Add the cdk key details to github secrets
+1) Delete the access key for the root user
+   > NB: Don't forget to do this! Root users should never have access keys.
+1) Create an access key for the `cdk` user https://console.aws.amazon.com/iam/home#/users/cdk?section=security_credentials
+1) Add the cdk key details to github secrets
    https://github.com/giraffe-science/giraffe-science.github.io/settings/secrets/actions   
 
-### Deploy the stack 
+### Deploy the stack
+
+See: [bin/deploy.ts](bin/deploy.ts).
 
 ```
-AWS_ACCESS_KEY_ID={{access key}} 
-AWS_SECRET_ACCESS_KEY={{secret key}} 
-yarn run cdk deploy
+AWS_ACCESS_KEY_ID={{access key}} # cdk user
+AWS_SECRET_ACCESS_KEY={{secret key}}  # cdk user
+SCIENTIFIC_GIRAFFE_ENV={{env}} 
+yarn run cdk deploy --all
 ```
+
+This might take a long time the first time and seem like it's hung while creating 
+`sesDomainIdentity`. Don't worry, this step takes up to 10 minutes; just let it run.
 
 ### Point domain at Route53
 
-At time of writing, [Route53 does not support .science](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#S)
-domains. So our registrar is still [gandi.net](gandi.net).
+At time of writing, [Route53 does not support .science TLDs](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#S). 
+So our registrar is still [gandi.net](gandi.net).
 
-Our stack includes a Route53 hosted zone, which as of the current deployment is 
-[here](https://console.aws.amazon.com/route53/v2/hostedzones#ListRecordSets/Z06476631ST7OH4711Z2G).
+Our stack includes a Route53 hosted zone, and you need to log in to your registrar and
+point each domain at the name servers for the hosted zone.
 
-Our Gandi DNS [points at the nameservers for the hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-inactive.html#migrate-dns-update-domain-inactive).
+Instructions are [here](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/migrate-dns-domain-inactive.html#migrate-dns-update-domain-inactive).
