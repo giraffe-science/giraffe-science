@@ -22,5 +22,7 @@ new UserPoolStack(app, `SgUserPool-${envName}`, envName, dns.zone, ses.transacti
     ...props.users
 });
 new ApiStack(app, `SgApi-${envName}`, envName, {
-    env
+    env,
+    zone: dns.zone,
+    certificate: dns.rootEdgeCertificate
 });

@@ -1,3 +1,5 @@
+import {CertificateValidation, ICertificate} from "@aws-cdk/aws-certificatemanager";
+import * as certs from "@aws-cdk/aws-certificatemanager";
 import * as route53 from "@aws-cdk/aws-route53";
 import {PublicHostedZone} from "@aws-cdk/aws-route53";
 import * as cdk from "@aws-cdk/core";
@@ -128,6 +130,7 @@ export interface DnsStackProps extends StackProps {
 
 export class DnsStack extends cdk.Stack {
     readonly zone: PublicHostedZone;
+    readonly rootEdgeCertificate: ICertificate;
 
     constructor(scope: cdk.Construct, id: string, env:string,props: DnsStackProps) {
         super(scope, id, {
@@ -154,5 +157,11 @@ export class DnsStack extends cdk.Stack {
         });
         gandiMail(this.zone);
         githubPages(this.zone);
+        this.rootEdgeCertificate = new certs.DnsValidatedCertificate(this, "rootEdgeCertificate", {
+            hostedZone: this.zone,
+            domainName: `*.${this.zone.zoneName}`,
+            validation: CertificateValidation.fromDns(this.zone),
+            region:"us-east-1"// required for EDGE-deployed lambdas
+        });
     }
 }

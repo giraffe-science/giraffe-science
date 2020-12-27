@@ -73,7 +73,6 @@ export class UserPoolStack extends cdk.Stack {
         new cognito.CfnUserPoolUser(this, "rootUser", {
             userPoolId: userPool.userPoolId,
             username: props.adminUser.username,
-            messageAction: "",
             desiredDeliveryMediums: ["EMAIL"],
             forceAliasCreation: true,
             userAttributes: [
