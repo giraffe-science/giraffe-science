@@ -24,9 +24,12 @@
     "@aws-cdk/core": "1.80.0",
     "@aws-cdk/aws-apigateway": "1.80.0",
     "@aws-cdk/aws-cognito": "1.80.0",
+    "@aws-cdk/aws-iam": "1.80.0",
     "@aws-cdk/aws-lambda": "1.80.0",
     "@aws-cdk/aws-route53": "1.80.0",
+    "@aws-cdk/aws-s3": "1.80.0",
     "@aws-cdk/aws-ses": "1.80.0",
+    "@aws-cdk/aws-ses-actions": "1.80.0",
     "aws-cdk-ses-domain-identity": "^1.0.4",
     "source-map-support": "^0.5.16"
   }

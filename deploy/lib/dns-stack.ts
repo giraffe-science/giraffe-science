@@ -129,7 +129,7 @@ export interface DnsStackProps extends StackProps {
 export class DnsStack extends cdk.Stack {
     readonly zone: PublicHostedZone;
 
-    constructor(scope: cdk.Construct, id: string, props: DnsStackProps) {
+    constructor(scope: cdk.Construct, id: string, env:string,props: DnsStackProps) {
         super(scope, id, {
             ...props,
             description: "Scientific Giraffe Hosted Zone",

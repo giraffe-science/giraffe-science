@@ -1,20 +1,26 @@
 import {Environment} from "@aws-cdk/core/lib/environment";
 import {DnsStackProps} from "../lib/dns-stack";
+import {UserPoolProps} from "../lib/user-pool-stack";
 
 export type Props = {
-    name: string
     environment: Environment
     dns: DnsStackProps
+    users: UserPoolProps
 }
 export const environments: { [env: string]: () => Props } = {
     prod: () => ({
-        name: "prod",
         environment: {
             account: expectEnv('SCIENTIFIC_GIRAFFE_PROD_ACCOUNT'),
             region: "us-west-2"
         },
         dns: {
             domainName: 'giraffe.science'
+        },
+        users: {
+            adminUser: {
+                username: "root",
+                email: expectEnv('SCIENTIFIC_GIRAFFE_PROD_ROOT_USER_EMAIL'),
+            }
         }
     })
 }
@@ -25,10 +31,13 @@ function expectEnv(name: string): string {
     return process.env[name] as string;
 }
 
-export const envKey = expectEnv('SCIENTIFIC_GIRAFFE_ENV');
 
-export function getProps(): Props {
-    if (!environments.hasOwnProperty(envKey))
-        throw new Error(`SCIENTIFIC_GIRAFFE_ENV '${envKey}' does not exist`);
-    return environments[envKey]();
+export function getProps(): { env: string, props: Props } {
+    const env = expectEnv('SCIENTIFIC_GIRAFFE_ENV');
+    if (!environments.hasOwnProperty(env))
+        throw new Error(`SCIENTIFIC_GIRAFFE_ENV '${env}' does not exist`);
+    return {
+        env,
+        props: environments[env]()
+    };
 }

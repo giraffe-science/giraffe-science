@@ -6,7 +6,7 @@ import 'source-map-support/register';
 
 
 export class ApiStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props: StackProps) {
+    constructor(scope: cdk.Construct, id: string,env:string, props: StackProps) {
         super(scope, id, {
             description: "Scientific Giraffe Api",
             ...props
@@ -19,7 +19,7 @@ export class ApiStack extends cdk.Stack {
         });
 
         new LambdaRestApi(this, 'apiLambdaRestApi', {
-            restApiName: 'Scientific Giraffe API',
+            restApiName: `Scientific Giraffe Api ${env}`,
             handler: apiFunction,
             proxy: true
         });

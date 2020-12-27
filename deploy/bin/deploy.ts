@@ -7,11 +7,20 @@ import {SesStack} from "../lib/ses-stack";
 import {UserPoolStack} from "../lib/user-pool-stack";
 import {getProps} from "./config";
 
-const props = getProps();
-const env = props.environment;
+const {env: envName, props} = getProps();
 const app = new cdk.App();
-
-const dns = new DnsStack(app, `SgDns-${props.name}`, {...props.dns, env});
-const ses = new SesStack(app, `SgSes-${props.name}`, dns.zone, {env});
-// new UserPoolStack(app, `SgUserPool-${props.name}`, dns.zone, ses.helloSesSubdomain, {env});
-new ApiStack(app, `SgApi-${props.name}`, {env});
+const env = props.environment;
+const dns = new DnsStack(app, `SgDns-${envName}`, envName, {
+    ...props.dns,
+    env: props.environment
+});
+const ses = new SesStack(app, `SgSes-${envName}`, envName, dns.zone, {
+    env
+});
+new UserPoolStack(app, `SgUserPool-${envName}`, envName, dns.zone, ses.transactionalMailSesSubdomain, {
+    env,
+    ...props.users
+});
+new ApiStack(app, `SgApi-${envName}`, envName, {
+    env
+});
