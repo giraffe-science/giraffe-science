@@ -84,12 +84,12 @@ export class UserPoolStack extends cdk.Stack {
         })
         const cfnUserPool = userPool.node.defaultChild as cognito.CfnUserPool;
 
-        // cfnUserPool.emailConfiguration = {
-        //     emailSendingAccount: 'DEVELOPER',
-        //     from: `Scientific Giraffe <${signupEmailAddress}>`,
-        //     // SES integration is only available in us-east-1, us-west-2, eu-west-1
-        //     sourceArn: `arn:aws:ses:${this.region}:${this.account}:identity/${signupEmailAddress}`,
-        // };
+        cfnUserPool.emailConfiguration = {
+            emailSendingAccount: 'DEVELOPER',
+            from: `Scientific Giraffe <${signupEmailAddress}>`,
+            // SES integration is only available in us-east-1, us-west-2, eu-west-1
+            sourceArn: `arn:aws:ses:${this.region}:${this.account}:identity/${signupEmailAddress}`,
+        };
         const apiFunction = new Function(this, 'apiFunction', {
             code: new AssetCode('src'),
             handler: 'index.handler',

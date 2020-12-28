@@ -1,4 +1,5 @@
 import * as api from "@aws-cdk/aws-apigateway";
+import {ApiKeySourceType} from "@aws-cdk/aws-apigateway";
 import {ICertificate} from "@aws-cdk/aws-certificatemanager/lib/certificate";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as route53 from "@aws-cdk/aws-route53";

@@ -34,6 +34,7 @@ export class SesStack extends cdk.Stack {
             dkim: true,
             hostedZone: zone
         });
+
         const cloudwatchProblems = `cloudwatch-problems-${env}`;
         new ses.CfnConfigurationSet(this, "cloudwatchProblemConfigurationSet", {
             name: cloudwatchProblems
