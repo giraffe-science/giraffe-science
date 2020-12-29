@@ -1,15 +1,18 @@
 import {Environment} from "@aws-cdk/core/lib/environment";
 import {DnsStackProps} from "../lib/dns-stack";
 import {UserPoolProps} from "../lib/user-pool-stack";
+import {PatientScienceEnv} from "../lib/util";
 
 export type Props = {
-    environment: Environment
+    environment: PatientScienceEnv
     dns: DnsStackProps
     users: UserPoolProps
 }
 export const environments: { [env: string]: () => Props } = {
     prod: () => ({
         environment: {
+            name:"Production",
+            protectFromDataDeletion:true,
             account: expectEnv('SCIENTIFIC_GIRAFFE_PROD_ACCOUNT'),
             region: "us-west-2"
         },

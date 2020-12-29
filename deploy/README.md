@@ -72,6 +72,17 @@ yarn run cdk deploy --all
 This might take a long time the first time and seem like it's hung while creating 
 `sesDomainIdentity`. Don't worry, this step takes up to 10 minutes; just let it run.
 
+The first time round will fail with:
+```
+Amazon SES account is in Sandbox. Verify Send-to email address or Amazon SES Account
+```
+
+You'll need to [manually verify](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses.html)
+the `signup@hello.${domain}` email address. 
+
+As long as the ses stack has deployed, Amazon's verification email will end up in the 
+`${??}-signup-ses-replies-${env}` s3 bucket and you can find a link to follow there.
+
 ### Point domain at Route53
 
 At time of writing, [Route53 does not support .science TLDs](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#S). 

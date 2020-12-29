@@ -37,7 +37,6 @@ export class UserPoolStack extends cdk.Stack {
                 emailSubject: "Scientific Giraffe: Verify your details",
             },
             selfSignUpEnabled: false,
-
             passwordPolicy: {minLength: 14},
             autoVerify: {
                 email: true
@@ -69,7 +68,6 @@ export class UserPoolStack extends cdk.Stack {
             mfa: undefined,
             mfaSecondFactor: undefined,
         });
-
         new cognito.CfnUserPoolUser(this, "rootUser", {
             userPoolId: userPool.userPoolId,
             username: props.adminUser.username,
